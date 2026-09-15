@@ -6,7 +6,7 @@
     "shortBlurb": "Six sparkly bao squishies that look like steamed buns and feel like cloud dough. Collect the colors, squeeze the stress out.",
     "price": 19.99,
     "packSize": 6,
-    "image": "/products/glitter-dumpling-6.svg",
+    "image": "/products/il-dumpling-glitter-6.jpg",
     "variants": [
       { "id": "assorted", "label": "Assorted glitter colors", "sku": "IL-GD-6-ASST" },
       { "id": "pastel", "label": "Pastel glitter mix", "sku": "IL-GD-6-PAST" }
@@ -30,7 +30,7 @@
     "shortBlurb": "Cute steamed-bun squishies that arrive like real dim sum — steamer tray energy included. Gift-ready, counter-ready, and absurdly squeezeable.",
     "price": 22.99,
     "packSize": 4,
-    "image": "/products/bao-steamer-4.svg",
+    "image": "/products/il-bao-steamer-set.jpg",
     "variants": [
       { "id": "tpr-steamer-4", "label": "4 bao + steamer vibes", "sku": "IL-BAO-STM-4" },
       { "id": "crystal-gold", "label": "Golden powder crystal mix", "sku": "IL-BAO-CRY-4" }
@@ -54,7 +54,7 @@
     "shortBlurb": "Daytime: squeeze the glitter beads. Nighttime: they glow. Two fidget tricks in one tiny bao — pure impulse magic.",
     "price": 18.99,
     "packSize": 6,
-    "image": "/products/glow-bao-6.svg",
+    "image": "/products/il-glow-glitter-bao-6.jpg",
     "variants": [
       { "id": "assorted-faces", "label": "Assorted cute faces", "sku": "IL-GLOW-6-ASST" }
     ],
@@ -77,7 +77,7 @@
     "shortBlurb": "Two big rainbow glitter baos for when a mini just won't hit. Slow-rise, camera-ready, desk-dominating.",
     "price": 24.99,
     "packSize": 2,
-    "image": "/products/jumbo-bao-2.svg",
+    "image": "/products/il-jumbo-glitter-bao-2.jpg",
     "variants": [
       { "id": "rainbow", "label": "Rainbow glitter duo", "sku": "IL-JUMBO-2-RBW" },
       { "id": "mystery", "label": "Mystery jumbo duo", "sku": "IL-JUMBO-2-MYS" }
