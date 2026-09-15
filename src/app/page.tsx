@@ -1,10 +1,9 @@
 import { ProductCard } from "@/components/ProductCard";
-import { getFeaturedProducts, getUpsellProducts } from "@/lib/products";
+import { getFeaturedProducts } from "@/lib/products";
 import Link from "next/link";
 
 export default function Home() {
   const featuredProducts = getFeaturedProducts();
-  const upsellProducts = getUpsellProducts();
 
   return (
     <div className="bg-[var(--il-cream)]">
@@ -30,12 +29,6 @@ export default function Home() {
             >
               Shop Multipacks
             </Link>
-            <Link
-              href="/product/jumbo-glitter-bao-duo"
-              className="inline-flex items-center justify-center px-6 py-3 border-2 border-[var(--il-grape)] text-[var(--il-grape)] font-medium rounded-full hover:bg-[var(--il-grape)] hover:text-white transition-colors"
-            >
-              Go Jumbo →
-            </Link>
           </div>
           
           {/* AOV nudge */}
@@ -58,25 +51,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Upsell Section */}
-      {upsellProducts.length > 0 && (
-        <section className="py-16 bg-wash">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center gap-3 mb-2">
-              <h2 className="text-2xl font-bold text-[var(--il-ink)]">Premium Pick</h2>
-              <span className="badge badge-premium">Premium</span>
-            </div>
-            <p className="text-[var(--il-muted)] mb-8">Go big with jumbo glitter baos — the ultimate desk flex.</p>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {upsellProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Info Section */}
       <section className="py-16 border-t border-zinc-200 bg-white">
