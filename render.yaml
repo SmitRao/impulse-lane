@@ -1,0 +1,22 @@
+# Render Blueprint for Impulse Lane
+# Deploy as a Node.js Web Service
+# Docs: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: impulse-lane
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: STRIPE_SECRET_KEY
+        sync: false  # Set manually in Render dashboard (secret)
+      - key: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+        sync: false  # Set manually in Render dashboard
+      - key: NEXT_PUBLIC_BASE_URL
+        sync: false  # Set to your Render URL after first deploy
+    healthCheckPath: /
+    autoDeploy: true

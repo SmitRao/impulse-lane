@@ -1,0 +1,54 @@
+[
+  {
+    "id": "steamer-six-pack",
+    "slug": "steamer-six-pack",
+    "name": "Steamer Six Pack",
+    "blurb": "6 mystery glitter dumpling squishies — unwrap the surprise! Perfect starter pack for collectors.",
+    "price_cents": 1999,
+    "image": "/products/steamer-six-pack.svg",
+    "variants": ["Classic Mix", "Pastel Mix"],
+    "featured": true
+  },
+  {
+    "id": "rare-hunt-dozen",
+    "slug": "rare-hunt-dozen",
+    "name": "Rare Hunt Dozen",
+    "blurb": "12-pack with 1 guaranteed rare glitter dumpling! The ultimate hunt for serious collectors.",
+    "price_cents": 2499,
+    "image": "/products/rare-hunt-dozen.svg",
+    "variants": null,
+    "featured": true
+  },
+  {
+    "id": "duo-gift-tin",
+    "slug": "duo-gift-tin",
+    "name": "Duo Gift Tin",
+    "blurb": "2 jumbo bao + 4 minis in a collectible tin — perfect for gifting!",
+    "price_cents": 2299,
+    "image": "/products/duo-gift-tin.svg",
+    "variants": null,
+    "featured": true
+  },
+  {
+    "id": "party-favor-flat",
+    "slug": "party-favor-flat",
+    "name": "Party Favor Flat",
+    "blurb": "8-pack classroom/party sleeve — share the squishy fun with friends!",
+    "price_cents": 1899,
+    "image": "/products/party-favor-flat.svg",
+    "variants": null,
+    "featured": true
+  },
+  {
+    "id": "collector-trio",
+    "slug": "collector-trio",
+    "name": "Collector Trio",
+    "blurb": "3 oversized glitter dumplings — limited edition upsell exclusive! Best value per squishy.",
+    "price_cents": 1699,
+    "image": "/products/collector-trio.svg",
+    "variants": null,
+    "featured": false,
+    "upsellOnly": true,
+    "edgeMargin": true
+  }
+]

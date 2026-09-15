@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="grad5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fef3c7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e0e7ff;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="glitter" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fff5e6;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#fef08a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fff5e6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="200" height="200" fill="url(#grad5)"/>
+  <!-- 3 oversized dumplings -->
+  <ellipse cx="60" cy="120" rx="35" ry="32" fill="url(#glitter)" stroke="#eab308" stroke-width="2"/>
+  <path d="M35 105 Q60 80 85 105" stroke="#d4a574" stroke-width="3" fill="none"/>
+  <ellipse cx="100" cy="90" rx="35" ry="32" fill="url(#glitter)" stroke="#f43f5e" stroke-width="2"/>
+  <path d="M75 75 Q100 50 125 75" stroke="#d4a574" stroke-width="3" fill="none"/>
+  <ellipse cx="140" cy="120" rx="35" ry="32" fill="url(#glitter)" stroke="#8b5cf6" stroke-width="2"/>
+  <path d="M115 105 Q140 80 165 105" stroke="#d4a574" stroke-width="3" fill="none"/>
+  <!-- Glitter sparkles -->
+  <circle cx="50" cy="115" r="3" fill="#fbbf24"/>
+  <circle cx="70" cy="125" r="2" fill="#fff"/>
+  <circle cx="90" cy="85" r="3" fill="#fb7185"/>
+  <circle cx="110" cy="95" r="2" fill="#fff"/>
+  <circle cx="130" cy="115" r="3" fill="#a78bfa"/>
+  <circle cx="150" cy="125" r="2" fill="#fff"/>
+  <!-- Best value badge -->
+  <rect x="60" y="30" width="80" height="25" rx="12" fill="#f43f5e"/>
+  <text x="100" y="47" text-anchor="middle" font-family="Arial" font-size="10" fill="#fff" font-weight="bold">BEST VALUE</text>
+  <!-- Stars -->
+  <text x="30" y="55" font-size="14" fill="#fbbf24"></text>
+  <text x="165" y="60" font-size="12" fill="#f472b6"></text>
+  <text x="100" y="175" text-anchor="middle" font-family="Arial" font-size="10" fill="#78716c">×3 Oversized</text>
+</svg>
