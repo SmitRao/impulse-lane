@@ -111,6 +111,7 @@ export default function CartPage() {
                     src={item.product.image}
                     alt={item.product.name}
                     fill
+                    unoptimized
                     className="object-contain p-2"
                   />
                 </div>

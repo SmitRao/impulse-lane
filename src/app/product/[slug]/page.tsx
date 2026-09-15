@@ -83,6 +83,7 @@ export default function ProductPage() {
               src={product.image}
               alt={product.name}
               fill
+              unoptimized
               className="object-contain p-12"
               priority
             />
@@ -175,18 +176,25 @@ export default function ProductPage() {
             </div>
 
             {/* Add to Cart - Sticky on mobile */}
-            <div className="sticky bottom-0 bg-[var(--il-cream)] py-4 -mx-4 px-4 sm:relative sm:bg-transparent sm:py-0 sm:mx-0 sm:px-0 z-10">
-              <button
-                onClick={handleAddToCart}
-                className={`w-full py-4 rounded-full font-medium text-lg transition-colors ${
-                  added
-                    ? 'bg-[var(--il-mint)] text-[var(--il-ink)]'
-                    : 'btn-pink'
-                }`}
-              >
-                {added ? '✓ Added to Cart!' : 'Add to Cart'}
-              </button>
+            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-zinc-200 p-4 sm:relative sm:bg-transparent sm:border-0 sm:p-0 z-20 shadow-[0_-4px_12px_rgba(0,0,0,0.1)] sm:shadow-none">
+              <div className="max-w-6xl mx-auto flex items-center gap-3 sm:block">
+                <div className="sm:hidden text-sm">
+                  <span className="font-bold text-[var(--il-ink)]">{formatPrice(product.price)}</span>
+                </div>
+                <button
+                  onClick={handleAddToCart}
+                  className={`flex-1 sm:w-full py-3 sm:py-4 rounded-full font-medium text-base sm:text-lg transition-colors ${
+                    added
+                      ? 'bg-[var(--il-mint)] text-[var(--il-ink)]'
+                      : 'btn-pink'
+                  }`}
+                >
+                  {added ? '✓ Added!' : 'Add to Cart'}
+                </button>
+              </div>
             </div>
+            {/* Spacer for fixed bottom bar on mobile */}
+            <div className="h-20 sm:hidden" />
 
             {/* Cart link */}
             <Link

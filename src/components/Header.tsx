@@ -28,16 +28,10 @@ export function Header() {
               Shop
             </Link>
             <Link 
-              href="/shipping" 
+              href="/about" 
               className="text-sm font-medium text-[var(--il-muted)] hover:text-[var(--il-pink)] transition-colors"
             >
-              Shipping
-            </Link>
-            <Link 
-              href="/refunds" 
-              className="text-sm font-medium text-[var(--il-muted)] hover:text-[var(--il-pink)] transition-colors"
-            >
-              Returns
+              About
             </Link>
             <Link 
               href="/contact" 
@@ -95,28 +89,37 @@ export function Header() {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="sm:hidden border-t border-zinc-100 py-4">
-            <nav className="flex flex-col gap-2">
+          <div className="sm:hidden border-t border-zinc-100 py-4 max-h-[70vh] overflow-y-auto">
+            <nav className="flex flex-col gap-1">
+              <p className="px-4 py-1 text-xs font-semibold text-[var(--il-muted)] uppercase tracking-wider">
+                Shop
+              </p>
               <Link 
                 href="/" 
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-4 py-2 text-[var(--il-ink)] hover:bg-[var(--il-cream)] rounded-lg transition-colors"
               >
-                Shop
+                All Products
               </Link>
               <Link 
-                href="/shipping" 
+                href="/cart" 
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-4 py-2 text-[var(--il-ink)] hover:bg-[var(--il-cream)] rounded-lg transition-colors"
               >
-                Shipping
+                Cart
               </Link>
+
+              <div className="my-2 border-t border-zinc-100" />
+              
+              <p className="px-4 py-1 text-xs font-semibold text-[var(--il-muted)] uppercase tracking-wider">
+                Info
+              </p>
               <Link 
-                href="/refunds" 
+                href="/about" 
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-4 py-2 text-[var(--il-ink)] hover:bg-[var(--il-cream)] rounded-lg transition-colors"
               >
-                Returns
+                About
               </Link>
               <Link 
                 href="/contact" 
@@ -131,6 +134,40 @@ export function Header() {
                 className="px-4 py-2 text-[var(--il-ink)] hover:bg-[var(--il-cream)] rounded-lg transition-colors"
               >
                 Safety Info
+              </Link>
+
+              <div className="my-2 border-t border-zinc-100" />
+              
+              <p className="px-4 py-1 text-xs font-semibold text-[var(--il-muted)] uppercase tracking-wider">
+                Policies
+              </p>
+              <Link 
+                href="/shipping" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-4 py-2 text-[var(--il-ink)] hover:bg-[var(--il-cream)] rounded-lg transition-colors"
+              >
+                Shipping
+              </Link>
+              <Link 
+                href="/refunds" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-4 py-2 text-[var(--il-ink)] hover:bg-[var(--il-cream)] rounded-lg transition-colors"
+              >
+                Returns & Refunds
+              </Link>
+              <Link 
+                href="/privacy" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-4 py-2 text-[var(--il-ink)] hover:bg-[var(--il-cream)] rounded-lg transition-colors"
+              >
+                Privacy Policy
+              </Link>
+              <Link 
+                href="/terms" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-4 py-2 text-[var(--il-ink)] hover:bg-[var(--il-cream)] rounded-lg transition-colors"
+              >
+                Terms of Service
               </Link>
             </nav>
           </div>
