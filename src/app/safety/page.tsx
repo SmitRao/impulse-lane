@@ -27,6 +27,27 @@ export default function SafetyPage() {
             </div>
           </div>
 
+          {/* CPSIA Disclaimer */}
+          <div className="bg-white rounded-xl p-6 shadow-sm">
+            <h2 className="text-xl font-semibold text-[var(--il-ink)] mb-4">
+              CPSIA Compliance Notice
+            </h2>
+            <div className="bg-rose-50 border border-rose-300 rounded-lg p-4">
+              <p className="text-[var(--il-ink)] text-sm">
+                <strong>Not a children&apos;s toy under CPSIA.</strong>
+              </p>
+              <p className="text-[var(--il-muted)] text-sm mt-2">
+                These products are <strong>not marketed, labeled, or sold as children&apos;s toys</strong> under 
+                the Consumer Product Safety Improvement Act (CPSIA). They are novelty collectible items 
+                intended for ages 14 and up.
+              </p>
+              <p className="text-[var(--il-muted)] text-sm mt-2">
+                We do <strong>not</strong> claim ASTM F963 testing or CPSIA children&apos;s product 
+                certification for these items.
+              </p>
+            </div>
+          </div>
+
           {/* Choking Hazard */}
           <div className="bg-white rounded-xl p-6 shadow-sm">
             <h2 className="text-xl font-semibold text-[var(--il-ink)] mb-4">

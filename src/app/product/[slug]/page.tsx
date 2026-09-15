@@ -122,11 +122,6 @@ export default function ProductPage() {
               <span className="text-3xl font-bold text-[var(--il-ink)]">
                 {formatPrice(product.price)}
               </span>
-              {product.compareAtPrice && (
-                <span className="text-xl text-[var(--il-muted)] line-through">
-                  {formatPrice(product.compareAtPrice)}
-                </span>
-              )}
             </div>
 
             {/* Variants */}

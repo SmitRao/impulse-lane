@@ -82,11 +82,6 @@ export function ProductCard({ product }: ProductCardProps) {
             <span className="text-lg font-bold text-[var(--il-ink)]">
               {formatPrice(product.price)}
             </span>
-            {product.compareAtPrice && (
-              <span className="text-sm text-[var(--il-muted)] line-through">
-                {formatPrice(product.compareAtPrice)}
-              </span>
-            )}
           </div>
           {/* Button is NOT nested inside a link now */}
           <button

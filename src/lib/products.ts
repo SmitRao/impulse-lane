@@ -12,7 +12,6 @@ export interface Product {
   name: string;
   shortBlurb: string;
   price: number;
-  compareAtPrice?: number;
   packSize: number;
   image: string;
   variants: ProductVariant[];
@@ -21,7 +20,6 @@ export interface Product {
   artDirection: string;
   ageGrade: string;
   featured: boolean;
-  upsellOnly?: boolean;
 }
 
 export function getAllProducts(): Product[] {
@@ -29,11 +27,7 @@ export function getAllProducts(): Product[] {
 }
 
 export function getFeaturedProducts(): Product[] {
-  return getAllProducts().filter(p => p.featured && !p.upsellOnly);
-}
-
-export function getUpsellProducts(): Product[] {
-  return getAllProducts().filter(p => p.upsellOnly);
+  return getAllProducts().filter(p => p.featured);
 }
 
 export function getProductBySlug(slug: string): Product | undefined {

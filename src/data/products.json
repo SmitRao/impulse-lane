@@ -3,9 +3,8 @@
     "id": "il-dumpling-glitter-6",
     "slug": "glitter-dumpling-surprise-6-pack",
     "name": "Glitter Dumpling Surprise 6-Pack",
-    "shortBlurb": "Six sparkly bao squishies that look like steamed buns and feel like cloud dough. Collect the colors, squeeze the stress out, and maybe find a rare glitter chase.",
+    "shortBlurb": "Six sparkly bao squishies that look like steamed buns and feel like cloud dough. Collect the colors, squeeze the stress out.",
     "price": 19.99,
-    "compareAtPrice": 24.99,
     "packSize": 6,
     "image": "/products/glitter-dumpling-6.svg",
     "variants": [
@@ -19,7 +18,7 @@
       "Pocket fidget for desk, bag, or car",
       "Age 14+ adult collectible fidget"
     ],
-    "badges": ["Best seller", "Limited glitter"],
+    "badges": [],
     "artDirection": "Overhead 6 glitter bao on kraft; hand squeeze mid-glitter swirl",
     "ageGrade": "14+",
     "featured": true
@@ -30,7 +29,6 @@
     "name": "Bao-in-a-Steamer Multipack",
     "shortBlurb": "Cute steamed-bun squishies that arrive like real dim sum — steamer tray energy included. Gift-ready, counter-ready, and absurdly squeezeable.",
     "price": 22.99,
-    "compareAtPrice": 27.99,
     "packSize": 4,
     "image": "/products/bao-steamer-4.svg",
     "variants": [
@@ -44,7 +42,7 @@
       "Strong gift / unboxing moment",
       "Age 14+ adult collectible fidget"
     ],
-    "badges": ["Gift hero"],
+    "badges": [],
     "artDirection": "Mini bamboo steamer open with 4 glitter bao",
     "ageGrade": "14+",
     "featured": true
@@ -55,7 +53,6 @@
     "name": "Glow Glitter Bead Bao 6-Pack",
     "shortBlurb": "Daytime: squeeze the glitter beads. Nighttime: they glow. Two fidget tricks in one tiny bao — pure impulse magic.",
     "price": 18.99,
-    "compareAtPrice": 22.99,
     "packSize": 6,
     "image": "/products/glow-bao-6.svg",
     "variants": [
@@ -68,7 +65,7 @@
       "No batteries required",
       "Age 14+ adult collectible fidget"
     ],
-    "badges": ["Glow drop"],
+    "badges": [],
     "artDirection": "Split day desk + night glow of same 6-pack",
     "ageGrade": "14+",
     "featured": true
@@ -79,7 +76,6 @@
     "name": "Jumbo Glitter Bao Duo",
     "shortBlurb": "Two big rainbow glitter baos for when a mini just won't hit. Slow-rise, camera-ready, desk-dominating.",
     "price": 24.99,
-    "compareAtPrice": 29.99,
     "packSize": 2,
     "image": "/products/jumbo-bao-2.svg",
     "variants": [
@@ -90,13 +86,12 @@
       "Jumbo ~8.5–15 cm glitter bao styles",
       "Slow rebound for ASMR videos",
       "Rainbow / mystery blind energy",
-      "Premium desk statement piece",
+      "Desk statement piece",
       "Age 14+ adult collectible fidget"
     ],
-    "badges": ["Premium"],
+    "badges": [],
     "artDirection": "Two oversized glitter baos with hand for scale",
     "ageGrade": "14+",
-    "featured": true,
-    "upsellOnly": true
+    "featured": true
   }
 ]
