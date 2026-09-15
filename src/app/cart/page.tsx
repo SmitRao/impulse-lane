@@ -14,6 +14,8 @@ export default function CartPage() {
   const shippingThreshold = 35;
   const shippingCost = subtotal >= shippingThreshold ? 0 : 4.99;
   const total = subtotal + shippingCost;
+  const progressToFreeShipping = Math.min((subtotal / shippingThreshold) * 100, 100);
+  const amountToFreeShipping = Math.max(shippingThreshold - subtotal, 0);
 
   const handleCheckout = async () => {
     setIsLoading(true);
@@ -69,7 +71,32 @@ export default function CartPage() {
   return (
     <div className="bg-[var(--il-cream)] py-8 sm:py-12 min-h-[60vh]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-[var(--il-ink)] mb-8">Your Cart</h1>
+        <h1 className="text-3xl font-bold text-[var(--il-ink)] mb-4">Your Cart</h1>
+
+        {/* Free Shipping Progress */}
+        <div className="bg-white rounded-xl p-4 shadow-sm mb-6">
+          {subtotal >= shippingThreshold ? (
+            <div className="flex items-center gap-2 text-[var(--il-mint)]">
+              <span className="text-lg">🎉</span>
+              <span className="font-medium">You&apos;ve unlocked FREE shipping!</span>
+            </div>
+          ) : (
+            <>
+              <div className="flex items-center justify-between text-sm mb-2">
+                <span className="text-[var(--il-muted)]">
+                  Add <strong className="text-[var(--il-pink)]">{formatPrice(amountToFreeShipping)}</strong> more for free shipping!
+                </span>
+                <span className="text-[var(--il-muted)]">{formatPrice(shippingThreshold)} goal</span>
+              </div>
+              <div className="h-2 bg-zinc-100 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-[var(--il-pink)] rounded-full transition-all duration-300"
+                  style={{ width: `${progressToFreeShipping}%` }}
+                />
+              </div>
+            </>
+          )}
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart Items */}
@@ -157,19 +184,13 @@ export default function CartPage() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[var(--il-muted)]">Shipping</span>
-                  <span className="text-[var(--il-ink)]">
+                  <span className={shippingCost === 0 ? 'text-[var(--il-mint)] font-medium' : 'text-[var(--il-ink)]'}>
                     {shippingCost === 0 ? 'FREE' : formatPrice(shippingCost)}
                   </span>
                 </div>
-                
-                {subtotal < shippingThreshold && (
-                  <p className="text-xs text-[var(--il-pink)] py-2">
-                    Add {formatPrice(shippingThreshold - subtotal)} more for free shipping!
-                  </p>
-                )}
 
                 <div className="pt-3 border-t border-zinc-200">
-                  <div className="flex justify-between font-semibold">
+                  <div className="flex justify-between font-semibold text-lg">
                     <span>Total</span>
                     <span>{formatPrice(total)}</span>
                   </div>
@@ -190,9 +211,21 @@ export default function CartPage() {
                 {isLoading ? 'Loading...' : 'Checkout'}
               </button>
 
-              <p className="mt-4 text-xs text-[var(--il-muted)] text-center">
-                🔒 Secure checkout powered by Stripe
-              </p>
+              {/* Trust Row */}
+              <div className="mt-6 pt-4 border-t border-zinc-200 space-y-3">
+                <div className="flex items-center gap-2 text-xs text-[var(--il-muted)]">
+                  <span>🔒</span>
+                  <span>Secure checkout powered by Stripe</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-[var(--il-muted)]">
+                  <span>🚚</span>
+                  <span>Ships in 1-2 business days</span>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-[var(--il-muted)]">
+                  <span>↩️</span>
+                  <span>30-day returns on unopened items</span>
+                </div>
+              </div>
 
               <Link
                 href="/"

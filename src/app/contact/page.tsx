@@ -1,6 +1,23 @@
+'use client';
+
 import Link from 'next/link';
+import { useState } from 'react';
 
 export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    orderNumber: '',
+    subject: '',
+    message: '',
+  });
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
+
   return (
     <div className="bg-[var(--il-cream)] py-12 min-h-[60vh]">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -10,63 +27,110 @@ export default function ContactPage() {
           <div className="bg-white rounded-xl p-6 shadow-sm">
             <p className="text-[var(--il-ink)] text-lg mb-6">
               Got questions about your order, our products, or just want to say hi? 
-              We&apos;d love to hear from you!
+              Fill out the form below and we&apos;ll get back to you.
             </p>
 
-            <div className="space-y-6">
-              <div className="flex items-start gap-4">
-                <span className="text-2xl">📧</span>
-                <div>
-                  <h3 className="font-semibold text-[var(--il-ink)] mb-1">Email</h3>
-                  <p className="text-[var(--il-muted)]">
-                    <a 
-                      href="mailto:hello@impulselane.com" 
-                      className="text-[var(--il-pink)] hover:underline"
+            {submitted ? (
+              <div className="bg-[var(--il-mint)] bg-opacity-20 border border-[var(--il-mint)] rounded-xl p-6 text-center">
+                <span className="text-4xl mb-4 block">✉️</span>
+                <h2 className="text-xl font-semibold text-[var(--il-ink)] mb-2">Message Received!</h2>
+                <p className="text-[var(--il-muted)]">
+                  Thanks for reaching out. We&apos;ll get back to you as soon as possible.
+                </p>
+                <p className="text-sm text-[var(--il-muted)] mt-4">
+                  (This is a test mode demo — no actual message was sent.)
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-[var(--il-ink)] mb-1">
+                      Name *
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      className="w-full px-4 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:border-[var(--il-pink)]"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-[var(--il-ink)] mb-1">
+                      Email *
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full px-4 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:border-[var(--il-pink)]"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="orderNumber" className="block text-sm font-medium text-[var(--il-ink)] mb-1">
+                      Order Number (if applicable)
+                    </label>
+                    <input
+                      type="text"
+                      id="orderNumber"
+                      value={formData.orderNumber}
+                      onChange={(e) => setFormData({ ...formData, orderNumber: e.target.value })}
+                      placeholder="e.g. IL-12345"
+                      className="w-full px-4 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:border-[var(--il-pink)]"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="subject" className="block text-sm font-medium text-[var(--il-ink)] mb-1">
+                      Subject *
+                    </label>
+                    <select
+                      id="subject"
+                      required
+                      value={formData.subject}
+                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                      className="w-full px-4 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:border-[var(--il-pink)]"
                     >
-                      hello@impulselane.com
-                    </a>
-                  </p>
-                  <p className="text-sm text-[var(--il-muted)] mt-1">
-                    We typically respond within 24-48 hours
-                  </p>
+                      <option value="">Select a topic...</option>
+                      <option value="order">Order Question</option>
+                      <option value="shipping">Shipping Inquiry</option>
+                      <option value="return">Return / Refund</option>
+                      <option value="product">Product Question</option>
+                      <option value="wholesale">Wholesale Inquiry</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
 
-              <div className="flex items-start gap-4">
-                <span className="text-2xl">📦</span>
                 <div>
-                  <h3 className="font-semibold text-[var(--il-ink)] mb-1">Order Issues</h3>
-                  <p className="text-[var(--il-muted)]">
-                    For order-related questions, please include your order number in your message. 
-                    Check your email for your order confirmation with tracking details.
-                  </p>
+                  <label htmlFor="message" className="block text-sm font-medium text-[var(--il-ink)] mb-1">
+                    Message *
+                  </label>
+                  <textarea
+                    id="message"
+                    required
+                    rows={5}
+                    value={formData.message}
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    placeholder="How can we help you?"
+                    className="w-full px-4 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:border-[var(--il-pink)] resize-none"
+                  />
                 </div>
-              </div>
 
-              <div className="flex items-start gap-4">
-                <span className="text-2xl">🔄</span>
-                <div>
-                  <h3 className="font-semibold text-[var(--il-ink)] mb-1">Returns & Refunds</h3>
-                  <p className="text-[var(--il-muted)]">
-                    Need to return something? Check our{' '}
-                    <Link href="/refunds" className="text-[var(--il-pink)] hover:underline">
-                      Returns & Refunds Policy
-                    </Link>{' '}
-                    first, then email us with your order details.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-4">
-                <span className="text-2xl">💬</span>
-                <div>
-                  <h3 className="font-semibold text-[var(--il-ink)] mb-1">General Inquiries</h3>
-                  <p className="text-[var(--il-muted)]">
-                    Wholesale inquiries, collaborations, or just fan mail — we read everything!
-                  </p>
-                </div>
-              </div>
-            </div>
+                <button
+                  type="submit"
+                  className="w-full py-3 btn-pink"
+                >
+                  Send Message
+                </button>
+              </form>
+            )}
           </div>
 
           <div className="bg-white rounded-xl p-6 shadow-sm">
@@ -95,18 +159,18 @@ export default function ContactPage() {
               </li>
               <li>
                 <Link 
-                  href="/privacy" 
+                  href="/safety" 
                   className="text-[var(--il-pink)] hover:underline flex items-center gap-2"
                 >
-                  <span>🔒</span> Privacy Policy
+                  <span>⚠️</span> Product Safety
                 </Link>
               </li>
               <li>
                 <Link 
-                  href="/terms" 
+                  href="/privacy" 
                   className="text-[var(--il-pink)] hover:underline flex items-center gap-2"
                 >
-                  <span>📋</span> Terms of Service
+                  <span>🔒</span> Privacy Policy
                 </Link>
               </li>
             </ul>
@@ -115,7 +179,7 @@ export default function ContactPage() {
           <div className="bg-[var(--il-gummy)] rounded-xl p-6">
             <p className="text-[var(--il-ink)] text-center font-medium">
               🧪 <strong>Test Mode Notice:</strong> This store is currently in test mode. 
-              No real orders are being processed.
+              Contact form submissions are not being processed.
             </p>
           </div>
         </div>

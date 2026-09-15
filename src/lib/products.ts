@@ -19,6 +19,7 @@ export interface Product {
   features: string[];
   badges: string[];
   artDirection: string;
+  ageGrade: string;
   featured: boolean;
   upsellOnly?: boolean;
 }

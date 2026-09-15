@@ -49,6 +49,11 @@ export function Footer() {
                   Returns & Refunds
                 </Link>
               </li>
+              <li>
+                <Link href="/safety" className="text-sm text-[var(--il-muted)] hover:text-[var(--il-pink)]">
+                  Product Safety
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -73,10 +78,17 @@ export function Footer() {
           <p className="text-xs text-[var(--il-muted)] text-center mb-4">
             © {new Date().getFullYear()} Impulse Lane. All rights reserved.
           </p>
-          <p className="text-xs text-[var(--il-muted)] text-center max-w-2xl mx-auto">
-            ⚠️ Novelty collectible squishies. Not for children under 3. 
-            Choking hazard — small parts / glitter fill.
-          </p>
+          <div className="text-xs text-[var(--il-muted)] text-center max-w-2xl mx-auto space-y-2">
+            <p>
+              ⚠️ <strong>Ages 14+</strong> — Novelty collectible squishies. 
+              Not for children under 3. Choking hazard — small parts / glitter fill.
+            </p>
+            <p>
+              <Link href="/safety" className="text-[var(--il-pink)] hover:underline">
+                View full safety information →
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </footer>

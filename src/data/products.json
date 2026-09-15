@@ -16,11 +16,11 @@
       "TPR glitter dumpling squishies ~8 cm",
       "Slow rebound + visible sparkle fill",
       "Blind-box energy — open & collect",
-      "Pocket fidget for desk, bag, or car",
-      "Viral food-toy look for UGC / TikTok"
+      "Pocket fidget for desk, bag, or car"
     ],
     "badges": ["Best seller", "Limited glitter"],
     "artDirection": "Overhead 6 glitter bao on kraft; hand squeeze mid-glitter swirl",
+    "ageGrade": "14+",
     "featured": true
   },
   {
@@ -40,11 +40,11 @@
       "~8–8.5 cm TPR / crystal-bead bao",
       "Steamer / dim-sum presentation story",
       "Satisfying pull + press texture",
-      "Strong gift / unboxing moment",
-      "Impulse Lane gift hero"
+      "Strong gift / unboxing moment"
     ],
     "badges": ["Gift hero"],
     "artDirection": "Mini bamboo steamer open with 4 glitter bao",
+    "ageGrade": "14+",
     "featured": true
   },
   {
@@ -63,11 +63,11 @@
       "5.5 cm TPR bao with glitter-bead fill",
       "Glow-in-the-dark after light charge",
       "Visible bead swirl while squishing",
-      "No batteries",
-      "Display-box friendly"
+      "No batteries required"
     ],
     "badges": ["Glow drop"],
     "artDirection": "Split day desk + night glow of same 6-pack",
+    "ageGrade": "14+",
     "featured": true
   },
   {
@@ -87,12 +87,36 @@
       "Jumbo ~8.5–15 cm glitter bao styles",
       "Slow rebound for ASMR videos",
       "Rainbow / mystery blind energy",
-      "Premium upsell ASP",
-      "USA-warehouse wholesale options exist"
+      "Premium desk statement piece"
     ],
     "badges": ["Premium"],
     "artDirection": "Two oversized glitter baos with hand for scale",
+    "ageGrade": "14+",
     "featured": true,
     "upsellOnly": true
+  },
+  {
+    "id": "il-smile-bao-party-8",
+    "slug": "smile-bao-party-pack",
+    "name": "Smile Bao Party Pack (8)",
+    "shortBlurb": "Eight smiley steamed-bun squishies in rainbow colors — perfect for party favors, desk buddies, or collecting the whole set.",
+    "price": 16.99,
+    "compareAtPrice": 19.99,
+    "packSize": 8,
+    "image": "/products/smile-bao-8.svg",
+    "variants": [
+      { "id": "rainbow-8", "label": "Rainbow smile faces", "sku": "IL-SMILE-8-RBW" },
+      { "id": "pastel-8", "label": "Pastel smile faces", "sku": "IL-SMILE-8-PST" }
+    ],
+    "features": [
+      "~5–5.5 cm silicone/TPE smile steamed buns",
+      "Bright emoji faces",
+      "Great value per piece",
+      "Bundle-friendly for gifts"
+    ],
+    "badges": ["Entry pack"],
+    "artDirection": "Rainbow arc of 8 smile baos on white",
+    "ageGrade": "14+",
+    "featured": true
   }
 ]

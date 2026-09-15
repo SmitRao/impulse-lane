@@ -15,6 +15,7 @@ function getBadgeClass(badge: string): string {
   if (badgeLower.includes('glow')) return 'badge-glow';
   if (badgeLower.includes('gift')) return 'badge-gift';
   if (badgeLower.includes('premium')) return 'badge-premium';
+  if (badgeLower.includes('entry')) return 'bg-[var(--il-mint)] text-[var(--il-ink)]';
   return 'bg-[var(--il-muted)] text-white';
 }
 
@@ -95,10 +96,15 @@ export default function ProductPage() {
                 ))}
               </div>
             )}
-            {/* Pack size chip */}
-            <span className="absolute bottom-4 right-4 chip-gummy text-lg">
-              ×{product.packSize}
-            </span>
+            {/* Age grade + Pack size */}
+            <div className="absolute bottom-4 right-4 flex gap-2">
+              <span className="px-2 py-1 bg-[var(--il-grape)] text-white text-sm font-bold rounded-full">
+                {product.ageGrade}
+              </span>
+              <span className="chip-gummy text-lg">
+                ×{product.packSize}
+              </span>
+            </div>
           </div>
 
           {/* Details */}
@@ -168,17 +174,19 @@ export default function ProductPage() {
               </div>
             </div>
 
-            {/* Add to Cart */}
-            <button
-              onClick={handleAddToCart}
-              className={`w-full py-4 rounded-full font-medium text-lg transition-colors ${
-                added
-                  ? 'bg-[var(--il-mint)] text-[var(--il-ink)]'
-                  : 'btn-pink'
-              }`}
-            >
-              {added ? '✓ Added to Cart!' : 'Add to Cart'}
-            </button>
+            {/* Add to Cart - Sticky on mobile */}
+            <div className="sticky bottom-0 bg-[var(--il-cream)] py-4 -mx-4 px-4 sm:relative sm:bg-transparent sm:py-0 sm:mx-0 sm:px-0 z-10">
+              <button
+                onClick={handleAddToCart}
+                className={`w-full py-4 rounded-full font-medium text-lg transition-colors ${
+                  added
+                    ? 'bg-[var(--il-mint)] text-[var(--il-ink)]'
+                    : 'btn-pink'
+                }`}
+              >
+                {added ? '✓ Added to Cart!' : 'Add to Cart'}
+              </button>
+            </div>
 
             {/* Cart link */}
             <Link
@@ -216,7 +224,7 @@ export default function ProductPage() {
                 <span className="text-lg">✨</span>
                 <div>
                   <p className="font-medium text-[var(--il-ink)]">Glitter Filled</p>
-                  <p className="text-sm text-[var(--il-muted)]">Sparkly goodness inside every squishy.</p>
+                  <p className="text-sm text-[var(--il-muted)]">Sealed construction keeps sparkles inside.</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -225,6 +233,28 @@ export default function ProductPage() {
                   <p className="font-medium text-[var(--il-ink)]">Flat Rate Shipping</p>
                   <p className="text-sm text-[var(--il-muted)]">$4.99 under $35, free $35+</p>
                 </div>
+              </div>
+            </div>
+
+            {/* Safety Info */}
+            <div className="mt-8 pt-8 border-t border-zinc-200">
+              <div className="bg-yellow-50 border border-yellow-300 rounded-xl p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="px-2 py-0.5 bg-[var(--il-grape)] text-white text-xs font-bold rounded-full">
+                    {product.ageGrade}
+                  </span>
+                  <span className="font-semibold text-[var(--il-ink)] text-sm">Safety Information</span>
+                </div>
+                <p className="text-xs text-[var(--il-muted)] mb-2">
+                  ⚠️ <strong>WARNING: CHOKING HAZARD</strong> — Small parts. Not for children under 3 years.
+                </p>
+                <p className="text-xs text-[var(--il-muted)] mb-2">
+                  Novelty collectible for ages {product.ageGrade}. Contains glitter fill in sealed TPR/TPE shell. 
+                  Do not puncture or ingest.
+                </p>
+                <Link href="/safety" className="text-xs text-[var(--il-pink)] hover:underline">
+                  Full safety information →
+                </Link>
               </div>
             </div>
           </div>
