@@ -1,7 +1,8 @@
 'use client';
 
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
 import type { Product } from '@/lib/products';
+import { getAllProducts } from '@/lib/products';
 
 export interface CartItem {
   product: Product;
@@ -22,13 +23,44 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 const CART_STORAGE_KEY = 'impulse-lane-cart';
+const CART_VERSION_KEY = 'impulse-lane-cart-version';
+const CURRENT_CART_VERSION = '2';
+
+function validateCartItems(storedItems: CartItem[]): CartItem[] {
+  const currentProducts = getAllProducts();
+  const validProductIds = new Set(currentProducts.map(p => p.id));
+  
+  return storedItems.filter(item => {
+    if (!item.product?.id || !validProductIds.has(item.product.id)) {
+      return false;
+    }
+    const currentProduct = currentProducts.find(p => p.id === item.product.id);
+    if (!currentProduct) return false;
+    if (typeof currentProduct.price !== 'number' || isNaN(currentProduct.price)) {
+      return false;
+    }
+    item.product = currentProduct;
+    return true;
+  });
+}
 
 function readCartFromStorage(): CartItem[] {
   if (typeof window === 'undefined') return [];
   try {
+    const version = localStorage.getItem(CART_VERSION_KEY);
+    if (version !== CURRENT_CART_VERSION) {
+      localStorage.removeItem(CART_STORAGE_KEY);
+      localStorage.setItem(CART_VERSION_KEY, CURRENT_CART_VERSION);
+      return [];
+    }
+    
     const stored = localStorage.getItem(CART_STORAGE_KEY);
-    return stored ? JSON.parse(stored) : [];
+    if (!stored) return [];
+    
+    const parsed = JSON.parse(stored);
+    return validateCartItems(parsed);
   } catch {
+    localStorage.removeItem(CART_STORAGE_KEY);
     return [];
   }
 }
@@ -36,11 +68,18 @@ function readCartFromStorage(): CartItem[] {
 function writeCartToStorage(items: CartItem[]): void {
   if (typeof window !== 'undefined') {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+    localStorage.setItem(CART_VERSION_KEY, CURRENT_CART_VERSION);
   }
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>(readCartFromStorage);
+  const [items, setItems] = useState<CartItem[]>([]);
+
+  useEffect(() => {
+    const validatedItems = readCartFromStorage();
+    setItems(validatedItems);
+    writeCartToStorage(validatedItems);
+  }, []);
 
   const addItem = useCallback((product: Product, variant?: string) => {
     setItems(current => {
@@ -96,12 +135,16 @@ export function CartProvider({ children }: { children: ReactNode }) {
     writeCartToStorage([]);
   }, []);
 
-  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+  const itemCount = items.reduce((sum, item) => sum + (item.quantity || 0), 0);
   
-  const subtotal = items.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
-    0
-  );
+  const subtotal = items.reduce((sum, item) => {
+    const price = item.product?.price;
+    const qty = item.quantity;
+    if (typeof price !== 'number' || isNaN(price) || typeof qty !== 'number' || isNaN(qty)) {
+      return sum;
+    }
+    return sum + price * qty;
+  }, 0);
 
   return (
     <CartContext.Provider

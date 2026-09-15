@@ -4,14 +4,6 @@ export default function RefundsPage() {
   return (
     <div className="bg-[var(--il-cream)] py-12 min-h-[60vh]">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* DRAFT Banner */}
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-8">
-          <p className="text-amber-800 text-sm font-medium">
-            📝 <strong>DRAFT POLICY</strong> — This returns/refunds policy is pending final review. 
-            Details may change before launch.
-          </p>
-        </div>
-
         <h1 className="text-3xl font-bold text-[var(--il-ink)] mb-8">Returns & Refunds Policy</h1>
 
         <div className="prose prose-zinc max-w-none space-y-6">

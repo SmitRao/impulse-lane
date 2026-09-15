@@ -25,30 +25,59 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    for (const item of body.items) {
+      if (typeof item.price !== 'number' || isNaN(item.price) || item.price <= 0) {
+        return NextResponse.json(
+          { error: `Invalid price for item: ${item.name || 'Unknown'}. Please refresh your cart and try again.` },
+          { status: 400 }
+        );
+      }
+      if (typeof item.quantity !== 'number' || isNaN(item.quantity) || item.quantity <= 0) {
+        return NextResponse.json(
+          { error: `Invalid quantity for item: ${item.name || 'Unknown'}. Please refresh your cart and try again.` },
+          { status: 400 }
+        );
+      }
+    }
+
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
     const subtotal = body.items.reduce(
       (sum, item) => sum + item.price * item.quantity,
       0
     );
+    
+    if (isNaN(subtotal) || subtotal <= 0) {
+      return NextResponse.json(
+        { error: 'Invalid cart total. Please refresh your cart and try again.' },
+        { status: 400 }
+      );
+    }
+    
     const shippingThreshold = 35;
     const shippingCost = subtotal >= shippingThreshold ? 0 : 4.99;
 
-    const lineItems = body.items.map((item) => ({
-      price_data: {
-        currency: 'usd',
-        product_data: {
-          name: item.variant ? `${item.name} — ${item.variant}` : item.name,
-          description: 'Glitter dumpling squishy multipack',
-          metadata: {
-            productId: item.productId,
-            variant: item.variant || '',
+    const lineItems = body.items.map((item) => {
+      const unitAmount = Math.round(item.price * 100);
+      if (isNaN(unitAmount) || unitAmount <= 0) {
+        throw new Error(`Invalid unit_amount for ${item.name}`);
+      }
+      return {
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: item.variant ? `${item.name} — ${item.variant}` : item.name,
+            description: 'Glitter dumpling squishy multipack',
+            metadata: {
+              productId: item.productId,
+              variant: item.variant || '',
+            },
           },
+          unit_amount: unitAmount,
         },
-        unit_amount: Math.round(item.price * 100),
-      },
-      quantity: item.quantity,
-    }));
+        quantity: item.quantity,
+      };
+    });
 
     if (shippingCost > 0) {
       lineItems.push({
