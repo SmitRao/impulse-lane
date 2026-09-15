@@ -23,17 +23,17 @@ export default function TermsPage() {
               Products
             </h2>
             <p className="text-[var(--il-muted)] mb-4">
-              Impulse Lane sells novelty collectible squishies intended for adult collectors and 
-              stress relief. Our products are:
+              Impulse Lane sells adult collectible fidget squishies for ages 14+ intended for 
+              stress relief and collecting. Our products are:
             </p>
             <ul className="space-y-2 text-[var(--il-muted)]">
               <li className="flex items-start gap-2">
                 <span className="text-[var(--il-pink)]">•</span>
-                <span>Novelty collectible items, not children&apos;s toys</span>
+                <span>Age 14+ adult collectible fidgets — not children&apos;s toys</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-[var(--il-pink)]">•</span>
-                <span>Contain small parts and glitter fill — choking hazard for children under 3</span>
+                <span>Contain small parts and glitter fill — choking hazard, not for children under 3</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-[var(--il-pink)]">•</span>

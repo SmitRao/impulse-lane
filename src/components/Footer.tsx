@@ -80,8 +80,11 @@ export function Footer() {
           </p>
           <div className="text-xs text-[var(--il-muted)] text-center max-w-2xl mx-auto space-y-2">
             <p>
-              ⚠️ <strong>Ages 14+</strong> — Novelty collectible squishies. 
-              Not for children under 3. Choking hazard — small parts / glitter fill.
+              <strong>Age 14+ adult collectible fidgets</strong> — not children&apos;s toys.
+            </p>
+            <p>
+              ⚠️ Novelty collectible squishies. Not for children under 3. 
+              Choking hazard — small parts / glitter fill.
             </p>
             <p>
               <Link href="/safety" className="text-[var(--il-pink)] hover:underline">

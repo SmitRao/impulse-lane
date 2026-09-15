@@ -7,23 +7,22 @@ export default function SafetyPage() {
         <h1 className="text-3xl font-bold text-[var(--il-ink)] mb-8">Product Safety Information</h1>
 
         <div className="prose prose-zinc max-w-none space-y-6">
-          {/* Age Grading */}
+          {/* Adult Collectible Framing */}
           <div className="bg-white rounded-xl p-6 shadow-sm">
             <div className="flex items-center gap-3 mb-4">
               <span className="px-3 py-1 bg-[var(--il-grape)] text-white text-sm font-bold rounded-full">14+</span>
               <h2 className="text-xl font-semibold text-[var(--il-ink)]">
-                Age Recommendation
+                Adult Collectible Fidgets
               </h2>
             </div>
             <p className="text-[var(--il-muted)] mb-4">
-              All Impulse Lane glitter dumpling squishies are designed as <strong>novelty collectibles 
-              for ages 14 and up</strong>. These products are intended for stress relief, desk décor, 
-              and adult collectors.
+              All Impulse Lane glitter dumpling squishies are designed as <strong>adult collectible 
+              fidgets for ages 14 and up</strong>. These products are intended for stress relief, 
+              desk décor, and collectors — not as children&apos;s toys.
             </p>
-            <div className="bg-[var(--il-pink)] bg-opacity-10 border border-[var(--il-pink)] rounded-lg p-4">
-              <p className="text-[var(--il-ink)] text-sm font-medium">
-                ⚠️ <strong>NOT SUITABLE FOR CHILDREN UNDER 3 YEARS</strong><br/>
-                These products are not intended for use as children&apos;s toys.
+            <div className="bg-[var(--il-grape)] bg-opacity-10 border border-[var(--il-grape)] rounded-lg p-4">
+              <p className="text-[var(--il-ink)] font-medium">
+                Age 14+ adult collectible fidget — not a children&apos;s toy.
               </p>
             </div>
           </div>
@@ -49,7 +48,7 @@ export default function SafetyPage() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-[var(--il-pink)]">•</span>
-                <span>Adult supervision required if used around young children</span>
+                <span>These are adult collectibles, not intended for young children</span>
               </li>
             </ul>
           </div>

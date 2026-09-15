@@ -243,14 +243,14 @@ export default function ProductPage() {
                   <span className="px-2 py-0.5 bg-[var(--il-grape)] text-white text-xs font-bold rounded-full">
                     {product.ageGrade}
                   </span>
-                  <span className="font-semibold text-[var(--il-ink)] text-sm">Safety Information</span>
+                  <span className="font-semibold text-[var(--il-ink)] text-sm">Adult Collectible</span>
                 </div>
                 <p className="text-xs text-[var(--il-muted)] mb-2">
-                  ⚠️ <strong>WARNING: CHOKING HAZARD</strong> — Small parts. Not for children under 3 years.
+                  <strong>Age {product.ageGrade} adult collectible fidget — not a children&apos;s toy.</strong>
                 </p>
                 <p className="text-xs text-[var(--il-muted)] mb-2">
-                  Novelty collectible for ages {product.ageGrade}. Contains glitter fill in sealed TPR/TPE shell. 
-                  Do not puncture or ingest.
+                  ⚠️ Choking hazard — small parts / glitter fill. Not for children under 3.
+                  Contains glitter in sealed TPR/TPE shell. Do not puncture or ingest.
                 </p>
                 <Link href="/safety" className="text-xs text-[var(--il-pink)] hover:underline">
                   Full safety information →
