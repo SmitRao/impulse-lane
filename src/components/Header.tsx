@@ -7,12 +7,12 @@ export function Header() {
   const { itemCount } = useCart();
 
   return (
-    <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-zinc-200">
+    <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-zinc-100">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2">
             <span className="text-2xl">🥟</span>
-            <span className="font-bold text-xl tracking-tight text-zinc-900">
+            <span className="font-bold text-xl tracking-tight text-[var(--il-ink)]">
               Impulse Lane
             </span>
           </Link>
@@ -20,27 +20,27 @@ export function Header() {
           <nav className="hidden sm:flex items-center gap-6">
             <Link 
               href="/" 
-              className="text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors"
+              className="text-sm font-medium text-[var(--il-muted)] hover:text-[var(--il-pink)] transition-colors"
             >
               Shop
             </Link>
             <Link 
               href="/shipping" 
-              className="text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors"
+              className="text-sm font-medium text-[var(--il-muted)] hover:text-[var(--il-pink)] transition-colors"
             >
               Shipping
             </Link>
             <Link 
-              href="/refunds" 
-              className="text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors"
+              href="/contact" 
+              className="text-sm font-medium text-[var(--il-muted)] hover:text-[var(--il-pink)] transition-colors"
             >
-              Returns
+              Contact
             </Link>
           </nav>
 
           <Link 
             href="/cart" 
-            className="relative flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900 text-white text-sm font-medium hover:bg-zinc-800 transition-colors"
+            className="relative flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--il-pink)] text-white text-sm font-medium hover:bg-[#E63F7A] transition-colors"
           >
             <svg 
               className="w-5 h-5" 
@@ -57,7 +57,7 @@ export function Header() {
             </svg>
             <span>Cart</span>
             {itemCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-rose-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 w-5 h-5 bg-[var(--il-grape)] text-white text-xs font-bold rounded-full flex items-center justify-center">
                 {itemCount}
               </span>
             )}

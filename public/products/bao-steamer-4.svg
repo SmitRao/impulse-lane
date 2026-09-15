@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bao1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFE4EC;stop-opacity:0.9" />
+    </linearGradient>
+    <linearGradient id="bao2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#5EEAD4;stop-opacity:0.7" />
+    </linearGradient>
+    <linearGradient id="bamboo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#D4A574;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#A67B5B;stop-opacity:1" />
+    </linearGradient>
+    <pattern id="bambooWeave" width="8" height="8" patternUnits="userSpaceOnUse">
+      <rect width="8" height="8" fill="#C4956A"/>
+      <rect x="0" y="0" width="4" height="4" fill="#D4A574"/>
+      <rect x="4" y="4" width="4" height="4" fill="#D4A574"/>
+    </pattern>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="200" height="200" fill="#FFF7ED" rx="20"/>
+  
+  <!-- Bamboo steamer base -->
+  <ellipse cx="100" cy="150" rx="75" ry="20" fill="#A67B5B"/>
+  <rect x="25" y="110" width="150" height="40" fill="url(#bambooWeave)"/>
+  <ellipse cx="100" cy="110" rx="75" ry="20" fill="url(#bambooWeave)"/>
+  <ellipse cx="100" cy="110" rx="70" ry="17" fill="#FFF7ED"/>
+  
+  <!-- Steam wisps -->
+  <path d="M60,80 Q55,60 65,45" stroke="#E0E0E0" stroke-width="3" fill="none" opacity="0.5"/>
+  <path d="M100,75 Q95,55 105,40" stroke="#E0E0E0" stroke-width="3" fill="none" opacity="0.5"/>
+  <path d="M140,80 Q135,60 145,45" stroke="#E0E0E0" stroke-width="3" fill="none" opacity="0.5"/>
+  
+  <!-- 4 bao in steamer -->
+  <ellipse cx="65" cy="95" rx="22" ry="18" fill="url(#bao1)"/>
+  <ellipse cx="65" cy="88" rx="15" ry="6" fill="#FFFFFF" opacity="0.7"/>
+  <circle cx="58" cy="92" r="2" fill="#FF4D8D" opacity="0.6"/>
+  <circle cx="72" cy="94" r="1.5" fill="#FFE566" opacity="0.6"/>
+  
+  <ellipse cx="135" cy="95" rx="22" ry="18" fill="url(#bao2)"/>
+  <ellipse cx="135" cy="88" rx="15" ry="6" fill="#FFFFFF" opacity="0.7"/>
+  <circle cx="128" cy="92" r="2" fill="#5EEAD4" opacity="0.6"/>
+  <circle cx="142" cy="94" r="1.5" fill="#FFE566" opacity="0.6"/>
+  
+  <ellipse cx="85" cy="115" rx="20" ry="16" fill="url(#bao1)"/>
+  <ellipse cx="85" cy="109" rx="14" ry="5" fill="#FFFFFF" opacity="0.7"/>
+  <circle cx="80" cy="112" r="1.5" fill="#FF4D8D" opacity="0.6"/>
+  
+  <ellipse cx="115" cy="115" rx="20" ry="16" fill="url(#bao2)"/>
+  <ellipse cx="115" cy="109" rx="14" ry="5" fill="#FFFFFF" opacity="0.7"/>
+  <circle cx="120" cy="112" r="1.5" fill="#5EEAD4" opacity="0.6"/>
+  
+  <!-- Sparkles -->
+  <g fill="#FFE566" opacity="0.9">
+    <polygon points="160,35 162,41 168,41 163,45 165,51 160,47 155,51 157,45 152,41 158,41"/>
+    <polygon points="35,55 37,61 43,61 38,65 40,71 35,67 30,71 32,65 27,61 33,61" transform="scale(0.8)"/>
+  </g>
+  
+  <!-- Pack label -->
+  <rect x="70" y="160" width="60" height="28" rx="14" fill="#FFE566"/>
+  <text x="100" y="179" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="14" fill="#1A1A1A">×4</text>
+</svg>

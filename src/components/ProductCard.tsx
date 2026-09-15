@@ -9,6 +9,16 @@ interface ProductCardProps {
   product: Product;
 }
 
+function getBadgeClass(badge: string): string {
+  const badgeLower = badge.toLowerCase();
+  if (badgeLower.includes('best seller')) return 'badge-bestseller';
+  if (badgeLower.includes('limited')) return 'badge-limited';
+  if (badgeLower.includes('glow')) return 'badge-glow';
+  if (badgeLower.includes('gift')) return 'badge-gift';
+  if (badgeLower.includes('premium')) return 'badge-premium';
+  return 'bg-[var(--il-muted)] text-white';
+}
+
 export function ProductCard({ product }: ProductCardProps) {
   const { addItem } = useCart();
 
@@ -16,50 +26,70 @@ export function ProductCard({ product }: ProductCardProps) {
     e.preventDefault();
     e.stopPropagation();
     const defaultVariant = product.variants?.[0];
-    addItem(product, defaultVariant);
+    addItem(product, defaultVariant?.label);
   };
+
+  const displayBadges = product.badges.slice(0, 2);
 
   return (
     <Link 
       href={`/product/${product.slug}`}
-      className="group block bg-white rounded-2xl overflow-hidden shadow-sm border border-zinc-100 hover:shadow-lg hover:border-zinc-200 transition-all duration-300"
+      className="group block bg-white rounded-2xl overflow-hidden shadow-sm border border-zinc-100 card-hover"
     >
-      <div className="relative aspect-square bg-gradient-to-br from-rose-50 to-amber-50 overflow-hidden">
+      <div className="relative aspect-square bg-wash overflow-hidden">
         <Image
           src={product.image}
           alt={product.name}
           fill
           className="object-contain p-8 group-hover:scale-105 transition-transform duration-300"
         />
-        {product.upsellOnly && (
-          <span className="absolute top-3 left-3 px-2 py-1 bg-rose-500 text-white text-xs font-medium rounded-full">
-            Best Value
-          </span>
+        
+        {/* Badges */}
+        {displayBadges.length > 0 && (
+          <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+            {displayBadges.map((badge) => (
+              <span key={badge} className={`badge ${getBadgeClass(badge)}`}>
+                {badge}
+              </span>
+            ))}
+          </div>
         )}
+
+        {/* Pack size chip */}
+        <span className="absolute bottom-3 right-3 chip-gummy">
+          ×{product.packSize}
+        </span>
       </div>
       
       <div className="p-4">
-        <h3 className="font-semibold text-zinc-900 mb-1 group-hover:text-rose-600 transition-colors">
+        <h3 className="font-semibold text-[var(--il-ink)] mb-1 group-hover:text-[var(--il-pink)] transition-colors">
           {product.name}
         </h3>
-        <p className="text-sm text-zinc-500 mb-3 line-clamp-2">
-          {product.blurb}
+        <p className="text-sm text-[var(--il-muted)] mb-3 line-clamp-2">
+          {product.shortBlurb}
         </p>
         
         <div className="flex items-center justify-between">
-          <span className="text-lg font-bold text-zinc-900">
-            {formatPrice(product.price_cents)}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-lg font-bold text-[var(--il-ink)]">
+              {formatPrice(product.price)}
+            </span>
+            {product.compareAtPrice && (
+              <span className="text-sm text-[var(--il-muted)] line-through">
+                {formatPrice(product.compareAtPrice)}
+              </span>
+            )}
+          </div>
           <button
             onClick={handleQuickAdd}
-            className="px-4 py-2 bg-zinc-900 text-white text-sm font-medium rounded-full hover:bg-rose-600 transition-colors"
+            className="px-4 py-2 btn-pink text-sm"
           >
             Add to Cart
           </button>
         </div>
         
-        {product.variants && (
-          <p className="text-xs text-zinc-400 mt-2">
+        {product.variants && product.variants.length > 1 && (
+          <p className="text-xs text-[var(--il-muted)] mt-2">
             {product.variants.length} variants available
           </p>
         )}

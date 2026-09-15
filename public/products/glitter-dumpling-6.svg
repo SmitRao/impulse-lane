@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="glitter1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFE4EC;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF4D8D;stop-opacity:0.8" />
+    </linearGradient>
+    <linearGradient id="glitter2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#E8F5E9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#5EEAD4;stop-opacity:0.8" />
+    </linearGradient>
+    <linearGradient id="glitter3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFF3E0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFE566;stop-opacity:0.8" />
+    </linearGradient>
+    <linearGradient id="glitter4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#EDE7F6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C5CFF;stop-opacity:0.8" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background kraft paper suggestion -->
+  <rect width="200" height="200" fill="#FFF7ED" rx="20"/>
+  
+  <!-- 6 glitter baos arranged in 2x3 grid -->
+  <!-- Row 1 -->
+  <ellipse cx="50" cy="55" rx="28" ry="22" fill="url(#glitter1)"/>
+  <ellipse cx="50" cy="48" rx="20" ry="8" fill="#FFFFFF" opacity="0.6"/>
+  <circle cx="42" cy="52" r="2" fill="#FF4D8D" opacity="0.8"/>
+  <circle cx="58" cy="54" r="1.5" fill="#FF4D8D" opacity="0.6"/>
+  <circle cx="48" cy="60" r="1" fill="#FFE566" opacity="0.7"/>
+  
+  <ellipse cx="100" cy="55" rx="28" ry="22" fill="url(#glitter2)"/>
+  <ellipse cx="100" cy="48" rx="20" ry="8" fill="#FFFFFF" opacity="0.6"/>
+  <circle cx="92" cy="52" r="2" fill="#5EEAD4" opacity="0.8"/>
+  <circle cx="108" cy="54" r="1.5" fill="#5EEAD4" opacity="0.6"/>
+  <circle cx="98" cy="60" r="1" fill="#FFE566" opacity="0.7"/>
+  
+  <ellipse cx="150" cy="55" rx="28" ry="22" fill="url(#glitter3)"/>
+  <ellipse cx="150" cy="48" rx="20" ry="8" fill="#FFFFFF" opacity="0.6"/>
+  <circle cx="142" cy="52" r="2" fill="#FFE566" opacity="0.8"/>
+  <circle cx="158" cy="54" r="1.5" fill="#FFE566" opacity="0.6"/>
+  <circle cx="148" cy="60" r="1" fill="#FF4D8D" opacity="0.7"/>
+  
+  <!-- Row 2 -->
+  <ellipse cx="50" cy="110" rx="28" ry="22" fill="url(#glitter4)"/>
+  <ellipse cx="50" cy="103" rx="20" ry="8" fill="#FFFFFF" opacity="0.6"/>
+  <circle cx="42" cy="107" r="2" fill="#7C5CFF" opacity="0.8"/>
+  <circle cx="58" cy="109" r="1.5" fill="#7C5CFF" opacity="0.6"/>
+  
+  <ellipse cx="100" cy="110" rx="28" ry="22" fill="url(#glitter1)"/>
+  <ellipse cx="100" cy="103" rx="20" ry="8" fill="#FFFFFF" opacity="0.6"/>
+  <circle cx="92" cy="107" r="2" fill="#FF4D8D" opacity="0.8"/>
+  <circle cx="108" cy="109" r="1.5" fill="#FF4D8D" opacity="0.6"/>
+  
+  <ellipse cx="150" cy="110" rx="28" ry="22" fill="url(#glitter2)"/>
+  <ellipse cx="150" cy="103" rx="20" ry="8" fill="#FFFFFF" opacity="0.6"/>
+  <circle cx="142" cy="107" r="2" fill="#5EEAD4" opacity="0.8"/>
+  <circle cx="158" cy="109" r="1.5" fill="#5EEAD4" opacity="0.6"/>
+  
+  <!-- Sparkle effects -->
+  <g fill="#FFE566" opacity="0.9">
+    <polygon points="30,30 32,36 38,36 33,40 35,46 30,42 25,46 27,40 22,36 28,36"/>
+    <polygon points="170,130 172,136 178,136 173,140 175,146 170,142 165,146 167,140 162,136 168,136" transform="scale(0.7) translate(70,50)"/>
+    <polygon points="85,160 87,166 93,166 88,170 90,176 85,172 80,176 82,170 77,166 83,166" transform="scale(0.6) translate(40,10)"/>
+  </g>
+  
+  <!-- Pack label -->
+  <rect x="70" y="155" width="60" height="30" rx="15" fill="#FFE566"/>
+  <text x="100" y="175" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="14" fill="#1A1A1A">×6</text>
+</svg>

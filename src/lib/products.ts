@@ -1,16 +1,26 @@
 import productsData from '@/data/products.json';
 
+export interface ProductVariant {
+  id: string;
+  label: string;
+  sku: string;
+}
+
 export interface Product {
   id: string;
   slug: string;
   name: string;
-  blurb: string;
-  price_cents: number;
+  shortBlurb: string;
+  price: number;
+  compareAtPrice?: number;
+  packSize: number;
   image: string;
-  variants: string[] | null;
+  variants: ProductVariant[];
+  features: string[];
+  badges: string[];
+  artDirection: string;
   featured: boolean;
   upsellOnly?: boolean;
-  edgeMargin?: boolean;
 }
 
 export function getAllProducts(): Product[] {
@@ -18,13 +28,21 @@ export function getAllProducts(): Product[] {
 }
 
 export function getFeaturedProducts(): Product[] {
-  return getAllProducts().filter(p => p.featured);
+  return getAllProducts().filter(p => p.featured && !p.upsellOnly);
+}
+
+export function getUpsellProducts(): Product[] {
+  return getAllProducts().filter(p => p.upsellOnly);
 }
 
 export function getProductBySlug(slug: string): Product | undefined {
   return getAllProducts().find(p => p.slug === slug);
 }
 
-export function formatPrice(cents: number): string {
+export function formatPrice(price: number): string {
+  return `$${price.toFixed(2)}`;
+}
+
+export function formatPriceCents(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;
 }

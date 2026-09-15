@@ -5,7 +5,7 @@ interface CartItem {
   productId: string;
   name: string;
   variant?: string;
-  price_cents: number;
+  price: number;
   quantity: number;
   image: string;
 }
@@ -28,24 +28,24 @@ export async function POST(request: NextRequest) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
     const subtotal = body.items.reduce(
-      (sum, item) => sum + item.price_cents * item.quantity,
+      (sum, item) => sum + item.price * item.quantity,
       0
     );
-    const shippingThreshold = 3500;
-    const shippingCost = subtotal >= shippingThreshold ? 0 : 499;
+    const shippingThreshold = 35;
+    const shippingCost = subtotal >= shippingThreshold ? 0 : 4.99;
 
     const lineItems = body.items.map((item) => ({
       price_data: {
         currency: 'usd',
         product_data: {
           name: item.variant ? `${item.name} — ${item.variant}` : item.name,
-          description: 'Blind-box dumpling squishy multipack',
+          description: 'Glitter dumpling squishy multipack',
           metadata: {
             productId: item.productId,
             variant: item.variant || '',
           },
         },
-        unit_amount: item.price_cents,
+        unit_amount: Math.round(item.price * 100),
       },
       quantity: item.quantity,
     }));
@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
               variant: '',
             },
           },
-          unit_amount: shippingCost,
+          unit_amount: Math.round(shippingCost * 100),
         },
         quantity: 1,
       });
