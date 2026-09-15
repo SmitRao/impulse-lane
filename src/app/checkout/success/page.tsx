@@ -19,14 +19,13 @@ export default function CheckoutSuccessPage() {
           Order Confirmed!
         </h1>
         <p className="text-[var(--il-muted)] mb-6">
-          Thank you for your order! Your glitter dumpling squishies are on their way 
-          (once we launch for real — this is a test mode demo).
+          Thank you for your order! Your glitter dumpling squishies are on their way.
         </p>
         
         <div className="bg-[var(--il-gummy)] rounded-xl p-4 mb-8">
           <p className="text-[var(--il-ink)] text-sm">
             🧪 <strong>TEST MODE:</strong> No actual charge was made. 
-            This is a demo store using Stripe test mode.
+            Stripe test mode is active.
           </p>
         </div>
 
