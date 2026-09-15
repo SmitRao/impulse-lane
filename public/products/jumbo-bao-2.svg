@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="rainbow1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF4D8D;stop-opacity:0.6" />
+      <stop offset="33%" style="stop-color:#FFE566;stop-opacity:0.6" />
+      <stop offset="66%" style="stop-color:#5EEAD4;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#7C5CFF;stop-opacity:0.6" />
+    </linearGradient>
+    <linearGradient id="rainbow2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#7C5CFF;stop-opacity:0.6" />
+      <stop offset="33%" style="stop-color:#5EEAD4;stop-opacity:0.6" />
+      <stop offset="66%" style="stop-color:#FFE566;stop-opacity:0.6" />
+      <stop offset="100%" style="stop-color:#FF4D8D;stop-opacity:0.6" />
+    </linearGradient>
+    <linearGradient id="jumboBaoBase" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFF0F5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="200" height="200" fill="#FFF7ED" rx="20"/>
+  
+  <!-- Hand for scale (simplified) -->
+  <path d="M150,180 Q145,160 155,150 L160,155 Q155,165 158,175 Z" fill="#F5D0C5" stroke="#E5C0B5" stroke-width="1"/>
+  <path d="M158,175 Q160,165 165,160 L170,165 Q165,172 168,180 Z" fill="#F5D0C5" stroke="#E5C0B5" stroke-width="1"/>
+  
+  <!-- Jumbo Bao 1 (larger) -->
+  <ellipse cx="70" cy="100" rx="50" ry="42" fill="url(#jumboBaoBase)"/>
+  <ellipse cx="70" cy="100" rx="48" ry="40" fill="url(#rainbow1)"/>
+  <ellipse cx="70" cy="85" rx="35" ry="12" fill="#FFFFFF" opacity="0.6"/>
+  
+  <!-- Glitter particles in bao 1 -->
+  <circle cx="50" cy="95" r="4" fill="#FF4D8D" opacity="0.7"/>
+  <circle cx="65" cy="105" r="3" fill="#FFE566" opacity="0.8"/>
+  <circle cx="85" cy="92" r="3.5" fill="#5EEAD4" opacity="0.7"/>
+  <circle cx="75" cy="115" r="3" fill="#7C5CFF" opacity="0.7"/>
+  <circle cx="55" cy="110" r="2.5" fill="#FF4D8D" opacity="0.6"/>
+  <circle cx="90" cy="108" r="2" fill="#FFE566" opacity="0.6"/>
+  
+  <!-- Jumbo Bao 2 (slightly smaller, overlapping) -->
+  <ellipse cx="140" cy="115" rx="42" ry="35" fill="url(#jumboBaoBase)"/>
+  <ellipse cx="140" cy="115" rx="40" ry="33" fill="url(#rainbow2)"/>
+  <ellipse cx="140" cy="102" rx="28" ry="10" fill="#FFFFFF" opacity="0.6"/>
+  
+  <!-- Glitter particles in bao 2 -->
+  <circle cx="125" cy="110" r="3.5" fill="#7C5CFF" opacity="0.7"/>
+  <circle cx="145" cy="120" r="3" fill="#5EEAD4" opacity="0.8"/>
+  <circle cx="155" cy="108" r="3" fill="#FFE566" opacity="0.7"/>
+  <circle cx="135" cy="128" r="2.5" fill="#FF4D8D" opacity="0.7"/>
+  <circle cx="150" cy="125" r="2" fill="#7C5CFF" opacity="0.6"/>
+  
+  <!-- Premium sparkles -->
+  <g fill="#FFE566" opacity="0.9">
+    <polygon points="30,35 32,41 38,41 33,45 35,51 30,47 25,51 27,45 22,41 28,41"/>
+    <polygon points="170,45 172,51 178,51 173,55 175,61 170,57 165,61 167,55 162,51 168,51" transform="scale(0.8) translate(35,-5)"/>
+  </g>
+  
+  <!-- "JUMBO" label -->
+  <rect x="5" y="165" width="55" height="24" rx="12" fill="#7C5CFF"/>
+  <text x="32" y="182" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="11" fill="#FFFFFF">JUMBO</text>
+  
+  <!-- Pack label -->
+  <rect x="70" y="165" width="60" height="28" rx="14" fill="#FFE566"/>
+  <text x="100" y="184" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="14" fill="#1A1A1A">×2</text>
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="baoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFFFFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FFE4EC;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Bao body -->
+  <ellipse cx="16" cy="18" rx="13" ry="11" fill="url(#baoGrad)"/>
+  <ellipse cx="16" cy="18" rx="12" ry="10" stroke="#FF4D8D" stroke-width="1" fill="none" opacity="0.5"/>
+  
+  <!-- Bao top fold -->
+  <ellipse cx="16" cy="12" rx="9" ry="4" fill="#FFFFFF" opacity="0.8"/>
+  
+  <!-- Glitter dots -->
+  <circle cx="11" cy="17" r="2" fill="#FF4D8D" opacity="0.6"/>
+  <circle cx="20" cy="19" r="1.5" fill="#5EEAD4" opacity="0.6"/>
+  <circle cx="16" cy="22" r="1.5" fill="#FFE566" opacity="0.7"/>
+  
+  <!-- Sparkle -->
+  <polygon points="26,6 27,9 30,9 28,11 29,14 26,12 23,14 24,11 22,9 25,9" fill="#FFE566" opacity="0.9"/>
+</svg>

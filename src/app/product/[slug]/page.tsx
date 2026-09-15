@@ -8,6 +8,17 @@ import { getProductBySlug, getAllProducts, formatPrice } from '@/lib/products';
 import { useCart } from '@/context/CartContext';
 import { ProductCard } from '@/components/ProductCard';
 
+function getBadgeClass(badge: string): string {
+  const badgeLower = badge.toLowerCase();
+  if (badgeLower.includes('best seller')) return 'badge-bestseller';
+  if (badgeLower.includes('limited')) return 'badge-limited';
+  if (badgeLower.includes('glow')) return 'badge-glow';
+  if (badgeLower.includes('gift')) return 'badge-gift';
+  if (badgeLower.includes('premium')) return 'badge-premium';
+  if (badgeLower.includes('entry')) return 'bg-[var(--il-mint)] text-[var(--il-ink)]';
+  return 'bg-[var(--il-muted)] text-white';
+}
+
 export default function ProductPage() {
   const params = useParams();
   const slug = params.slug as string;
@@ -15,20 +26,20 @@ export default function ProductPage() {
   const { addItem } = useCart();
   
   const [selectedVariant, setSelectedVariant] = useState<string | undefined>(
-    product?.variants?.[0]
+    product?.variants?.[0]?.label
   );
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
   if (!product) {
     return (
-      <div className="min-h-[60vh] flex flex-col items-center justify-center">
+      <div className="min-h-[60vh] flex flex-col items-center justify-center bg-[var(--il-cream)]">
         <span className="text-6xl mb-4">🥟</span>
-        <h1 className="text-2xl font-bold text-zinc-900 mb-2">Product Not Found</h1>
-        <p className="text-zinc-600 mb-6">This dumpling must have rolled away!</p>
+        <h1 className="text-2xl font-bold text-[var(--il-ink)] mb-2">Product Not Found</h1>
+        <p className="text-[var(--il-muted)] mb-6">This dumpling must have rolled away!</p>
         <Link
           href="/"
-          className="px-6 py-3 bg-zinc-900 text-white font-medium rounded-full hover:bg-rose-600 transition-colors"
+          className="px-6 py-3 btn-pink"
         >
           Back to Shop
         </Link>
@@ -48,70 +59,94 @@ export default function ProductPage() {
     .filter(p => p.id !== product.id)
     .slice(0, 3);
 
+  const displayBadges = product.badges.slice(0, 2);
+
   return (
-    <div className="bg-zinc-50 py-8 sm:py-12">
+    <div className="bg-[var(--il-cream)] py-8 sm:py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav className="mb-8">
-          <ol className="flex items-center gap-2 text-sm text-zinc-500">
+          <ol className="flex items-center gap-2 text-sm text-[var(--il-muted)]">
             <li>
-              <Link href="/" className="hover:text-zinc-900">Shop</Link>
+              <Link href="/" className="hover:text-[var(--il-pink)]">Shop</Link>
             </li>
             <li>/</li>
-            <li className="text-zinc-900">{product.name}</li>
+            <li className="text-[var(--il-ink)]">{product.name}</li>
           </ol>
         </nav>
 
         {/* Product Detail */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* Image */}
-          <div className="relative aspect-square bg-gradient-to-br from-rose-50 to-amber-50 rounded-3xl overflow-hidden">
+          <div className="relative aspect-square bg-wash rounded-3xl overflow-hidden">
             <Image
               src={product.image}
               alt={product.name}
               fill
+              unoptimized
               className="object-contain p-12"
               priority
             />
-            {product.upsellOnly && (
-              <span className="absolute top-4 left-4 px-3 py-1.5 bg-rose-500 text-white text-sm font-medium rounded-full">
-                Best Value
-              </span>
+            {/* Badges */}
+            {displayBadges.length > 0 && (
+              <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                {displayBadges.map((badge) => (
+                  <span key={badge} className={`badge ${getBadgeClass(badge)}`}>
+                    {badge}
+                  </span>
+                ))}
+              </div>
             )}
+            {/* Age grade + Pack size */}
+            <div className="absolute bottom-4 right-4 flex gap-2">
+              <span className="px-2 py-1 bg-[var(--il-grape)] text-white text-sm font-bold rounded-full">
+                {product.ageGrade}
+              </span>
+              <span className="chip-gummy text-lg">
+                ×{product.packSize}
+              </span>
+            </div>
           </div>
 
           {/* Details */}
           <div className="flex flex-col">
-            <h1 className="text-3xl sm:text-4xl font-bold text-zinc-900 mb-4">
+            <h1 className="text-3xl sm:text-4xl font-bold text-[var(--il-ink)] mb-4">
               {product.name}
             </h1>
             
-            <p className="text-lg text-zinc-600 mb-6">
-              {product.blurb}
+            <p className="text-lg text-[var(--il-muted)] mb-6">
+              {product.shortBlurb}
             </p>
 
-            <div className="text-3xl font-bold text-zinc-900 mb-6">
-              {formatPrice(product.price_cents)}
+            <div className="flex items-center gap-3 mb-6">
+              <span className="text-3xl font-bold text-[var(--il-ink)]">
+                {formatPrice(product.price)}
+              </span>
+              {product.compareAtPrice && (
+                <span className="text-xl text-[var(--il-muted)] line-through">
+                  {formatPrice(product.compareAtPrice)}
+                </span>
+              )}
             </div>
 
             {/* Variants */}
             {product.variants && product.variants.length > 0 && (
               <div className="mb-6">
-                <label className="block text-sm font-medium text-zinc-900 mb-2">
-                  Select Mix
+                <label className="block text-sm font-medium text-[var(--il-ink)] mb-2">
+                  Select Variant
                 </label>
                 <div className="flex flex-wrap gap-2">
                   {product.variants.map((variant) => (
                     <button
-                      key={variant}
-                      onClick={() => setSelectedVariant(variant)}
+                      key={variant.id}
+                      onClick={() => setSelectedVariant(variant.label)}
                       className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                        selectedVariant === variant
-                          ? 'bg-zinc-900 text-white'
-                          : 'bg-white border border-zinc-300 text-zinc-700 hover:border-zinc-900'
+                        selectedVariant === variant.label
+                          ? 'bg-[var(--il-pink)] text-white'
+                          : 'bg-white border border-zinc-300 text-[var(--il-ink)] hover:border-[var(--il-pink)]'
                       }`}
                     >
-                      {variant}
+                      {variant.label}
                     </button>
                   ))}
                 </div>
@@ -120,68 +155,114 @@ export default function ProductPage() {
 
             {/* Quantity */}
             <div className="mb-6">
-              <label className="block text-sm font-medium text-zinc-900 mb-2">
+              <label className="block text-sm font-medium text-[var(--il-ink)] mb-2">
                 Quantity
               </label>
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 flex items-center justify-center rounded-full border border-zinc-300 text-zinc-700 hover:border-zinc-900 transition-colors"
+                  className="w-10 h-10 flex items-center justify-center rounded-full border border-zinc-300 text-[var(--il-ink)] hover:border-[var(--il-pink)] transition-colors"
                 >
                   -
                 </button>
                 <span className="w-12 text-center font-medium">{quantity}</span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-10 h-10 flex items-center justify-center rounded-full border border-zinc-300 text-zinc-700 hover:border-zinc-900 transition-colors"
+                  className="w-10 h-10 flex items-center justify-center rounded-full border border-zinc-300 text-[var(--il-ink)] hover:border-[var(--il-pink)] transition-colors"
                 >
                   +
                 </button>
               </div>
             </div>
 
-            {/* Add to Cart */}
-            <button
-              onClick={handleAddToCart}
-              className={`w-full py-4 rounded-full font-medium text-lg transition-colors ${
-                added
-                  ? 'bg-green-500 text-white'
-                  : 'bg-zinc-900 text-white hover:bg-rose-600'
-              }`}
-            >
-              {added ? '✓ Added to Cart!' : 'Add to Cart'}
-            </button>
+            {/* Add to Cart - Sticky on mobile */}
+            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-zinc-200 p-4 sm:relative sm:bg-transparent sm:border-0 sm:p-0 z-20 shadow-[0_-4px_12px_rgba(0,0,0,0.1)] sm:shadow-none">
+              <div className="max-w-6xl mx-auto flex items-center gap-3 sm:block">
+                <div className="sm:hidden text-sm">
+                  <span className="font-bold text-[var(--il-ink)]">{formatPrice(product.price)}</span>
+                </div>
+                <button
+                  onClick={handleAddToCart}
+                  className={`flex-1 sm:w-full py-3 sm:py-4 rounded-full font-medium text-base sm:text-lg transition-colors ${
+                    added
+                      ? 'bg-[var(--il-mint)] text-[var(--il-ink)]'
+                      : 'btn-pink'
+                  }`}
+                >
+                  {added ? '✓ Added!' : 'Add to Cart'}
+                </button>
+              </div>
+            </div>
+            {/* Spacer for fixed bottom bar on mobile */}
+            <div className="h-20 sm:hidden" />
 
             {/* Cart link */}
             <Link
               href="/cart"
-              className="mt-4 text-center text-sm text-zinc-500 hover:text-zinc-900 underline"
+              className="mt-4 text-center text-sm text-[var(--il-muted)] hover:text-[var(--il-pink)] underline"
             >
               View Cart
             </Link>
+
+            {/* Features */}
+            {product.features && product.features.length > 0 && (
+              <div className="mt-8 pt-8 border-t border-zinc-200">
+                <h3 className="font-semibold text-[var(--il-ink)] mb-4">Features</h3>
+                <ul className="space-y-2">
+                  {product.features.map((feature, index) => (
+                    <li key={index} className="flex items-start gap-2 text-[var(--il-muted)]">
+                      <span className="text-[var(--il-pink)]">✓</span>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {/* Product Info */}
             <div className="mt-8 pt-8 border-t border-zinc-200 space-y-4">
               <div className="flex items-start gap-3">
                 <span className="text-lg">📦</span>
                 <div>
-                  <p className="font-medium text-zinc-900">Mystery Blind Box</p>
-                  <p className="text-sm text-zinc-500">Each dumpling is a random surprise!</p>
+                  <p className="font-medium text-[var(--il-ink)]">Mystery Blind Box</p>
+                  <p className="text-sm text-[var(--il-muted)]">Each dumpling is a random surprise!</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <span className="text-lg">✨</span>
                 <div>
-                  <p className="font-medium text-zinc-900">Glitter Filled</p>
-                  <p className="text-sm text-zinc-500">Sparkly goodness inside every squishy.</p>
+                  <p className="font-medium text-[var(--il-ink)]">Glitter Filled</p>
+                  <p className="text-sm text-[var(--il-muted)]">Sealed construction keeps sparkles inside.</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
                 <span className="text-lg">🚚</span>
                 <div>
-                  <p className="font-medium text-zinc-900">Flat Rate Shipping</p>
-                  <p className="text-sm text-zinc-500">$4.99 under $35, free $35+</p>
+                  <p className="font-medium text-[var(--il-ink)]">Flat Rate Shipping</p>
+                  <p className="text-sm text-[var(--il-muted)]">$4.99 under $35, free $35+</p>
                 </div>
+              </div>
+            </div>
+
+            {/* Safety Info */}
+            <div className="mt-8 pt-8 border-t border-zinc-200">
+              <div className="bg-yellow-50 border border-yellow-300 rounded-xl p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="px-2 py-0.5 bg-[var(--il-grape)] text-white text-xs font-bold rounded-full">
+                    {product.ageGrade}
+                  </span>
+                  <span className="font-semibold text-[var(--il-ink)] text-sm">Adult Collectible</span>
+                </div>
+                <p className="text-xs text-[var(--il-muted)] mb-2">
+                  <strong>Age {product.ageGrade} adult collectible fidget — not a children&apos;s toy.</strong>
+                </p>
+                <p className="text-xs text-[var(--il-muted)] mb-2">
+                  ⚠️ Choking hazard — small parts / glitter fill. Not for children under 3.
+                  Contains glitter in sealed TPR/TPE shell. Do not puncture or ingest.
+                </p>
+                <Link href="/safety" className="text-xs text-[var(--il-pink)] hover:underline">
+                  Full safety information →
+                </Link>
               </div>
             </div>
           </div>
@@ -190,7 +271,7 @@ export default function ProductPage() {
         {/* Related Products */}
         {relatedProducts.length > 0 && (
           <div>
-            <h2 className="text-2xl font-bold text-zinc-900 mb-6">
+            <h2 className="text-2xl font-bold text-[var(--il-ink)] mb-6">
               You Might Also Like
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

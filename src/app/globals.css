@@ -1,15 +1,33 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Impulse Lane Design Tokens */
+  --il-cream: #FFF7ED;
+  --il-pink: #FF4D8D;
+  --il-gummy: #FFE566;
+  --il-grape: #7C5CFF;
+  --il-mint: #5EEAD4;
+  --il-ink: #1A1A1A;
+  --il-muted: #6B7280;
+  --il-card: #FFFFFF;
+  
+  --background: var(--il-cream);
+  --foreground: var(--il-ink);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-il-cream: var(--il-cream);
+  --color-il-pink: var(--il-pink);
+  --color-il-gummy: var(--il-gummy);
+  --color-il-grape: var(--il-grape);
+  --color-il-mint: var(--il-mint);
+  --color-il-ink: var(--il-ink);
+  --color-il-muted: var(--il-muted);
+  --color-il-card: var(--il-card);
+  --font-sans: var(--font-nunito);
+  --font-display: var(--font-fredoka);
 }
 
 body {
@@ -18,9 +36,85 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
+}
+
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* Wash gradient background */
+.bg-wash {
+  background: linear-gradient(135deg, var(--il-cream) 0%, #FFE4EC 50%, #F3E8FF 100%);
+}
+
+/* Pink pill button */
+.btn-pink {
+  background-color: var(--il-pink);
+  color: white;
+  font-weight: 500;
+  border-radius: 9999px;
+  transition: all 0.2s ease;
+}
+
+.btn-pink:hover {
+  background-color: #E63F7A;
+  transform: translateY(-1px);
+}
+
+/* Gummy chip */
+.chip-gummy {
+  background-color: var(--il-gummy);
+  color: var(--il-ink);
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+}
+
+/* Badge styles */
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.badge-bestseller {
+  background-color: var(--il-pink);
+  color: white;
+}
+
+.badge-limited {
+  background-color: var(--il-grape);
+  color: white;
+}
+
+.badge-glow {
+  background-color: var(--il-mint);
+  color: var(--il-ink);
+}
+
+.badge-gift {
+  background-color: #F472B6;
+  color: white;
+}
+
+.badge-premium {
+  background-color: var(--il-grape);
+  color: white;
+}
+
+/* Card hover effect */
+.card-hover {
+  transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
 }

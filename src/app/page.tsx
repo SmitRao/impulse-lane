@@ -1,43 +1,46 @@
 import { ProductCard } from "@/components/ProductCard";
-import { getAllProducts } from "@/lib/products";
+import { getFeaturedProducts, getUpsellProducts } from "@/lib/products";
 import Link from "next/link";
 
 export default function Home() {
-  const products = getAllProducts();
-  const featuredProducts = products.filter(p => p.featured);
-  const upsellProducts = products.filter(p => p.upsellOnly);
+  const featuredProducts = getFeaturedProducts();
+  const upsellProducts = getUpsellProducts();
 
   return (
-    <div className="bg-zinc-50">
+    <div className="bg-[var(--il-cream)]">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-rose-50 via-amber-50 to-violet-50 py-16 sm:py-24">
+      <section className="bg-wash py-16 sm:py-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <span className="text-6xl mb-4 block">🥟✨</span>
-          <h1 className="text-4xl sm:text-5xl font-bold text-zinc-900 mb-4">
-            Mystery Dumpling Squishies
+          {/* Hero illustration slot */}
+          <div className="w-32 h-32 mx-auto mb-6 bg-white rounded-full flex items-center justify-center shadow-lg">
+            <span className="text-6xl">🥟✨</span>
+          </div>
+          
+          <h1 className="text-4xl sm:text-5xl font-bold text-[var(--il-ink)] mb-4">
+            Glitter Dumpling Squishies
           </h1>
-          <p className="text-lg text-zinc-600 max-w-2xl mx-auto mb-8">
-            Unbox the surprise! Collect glitter-filled blind-box dumpling squishies 
-            in fun multipacks. Perfect for collectors, parties, and gifts.
+          <p className="text-lg text-[var(--il-muted)] max-w-2xl mx-auto mb-8">
+            Squeeze the stress away with glitter-filled bao squishies. 
+            Collect, fidget, and share the squishy satisfaction.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="#products"
-              className="inline-flex items-center justify-center px-6 py-3 bg-zinc-900 text-white font-medium rounded-full hover:bg-rose-600 transition-colors"
+              className="inline-flex items-center justify-center px-6 py-3 btn-pink text-lg"
             >
               Shop Multipacks
             </Link>
             <Link
-              href="/product/rare-hunt-dozen"
-              className="inline-flex items-center justify-center px-6 py-3 border-2 border-zinc-900 text-zinc-900 font-medium rounded-full hover:bg-zinc-900 hover:text-white transition-colors"
+              href="/product/jumbo-glitter-bao-duo"
+              className="inline-flex items-center justify-center px-6 py-3 border-2 border-[var(--il-grape)] text-[var(--il-grape)] font-medium rounded-full hover:bg-[var(--il-grape)] hover:text-white transition-colors"
             >
-              Hunt Rares →
+              Go Jumbo →
             </Link>
           </div>
           
           {/* AOV nudge */}
-          <p className="mt-8 text-sm text-zinc-500">
-            💡 Tip: Grab 2 packs or the Rare Hunt Dozen for the best collection boost!
+          <p className="mt-8 text-sm text-[var(--il-muted)]">
+            💡 Spend $35+ for free shipping!
           </p>
         </div>
       </section>
@@ -45,8 +48,8 @@ export default function Home() {
       {/* Products Section */}
       <section id="products" className="py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-zinc-900 mb-2">Shop Multipacks</h2>
-          <p className="text-zinc-600 mb-8">All mystery packs — every dumpling is a surprise!</p>
+          <h2 className="text-2xl font-bold text-[var(--il-ink)] mb-2">Shop Multipacks</h2>
+          <p className="text-[var(--il-muted)] mb-8">Glitter-filled bao squishies in every pack — squeeze, collect, repeat.</p>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {featuredProducts.map((product) => (
@@ -58,10 +61,13 @@ export default function Home() {
 
       {/* Upsell Section */}
       {upsellProducts.length > 0 && (
-        <section className="py-16 bg-gradient-to-br from-amber-50 to-rose-50">
+        <section className="py-16 bg-wash">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-zinc-900 mb-2">Best Value Pick</h2>
-            <p className="text-zinc-600 mb-8">Maximum squishy, minimum spend per piece.</p>
+            <div className="flex items-center gap-3 mb-2">
+              <h2 className="text-2xl font-bold text-[var(--il-ink)]">Premium Pick</h2>
+              <span className="badge badge-premium">Premium</span>
+            </div>
+            <p className="text-[var(--il-muted)] mb-8">Go big with jumbo glitter baos — the ultimate desk flex.</p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {upsellProducts.map((product) => (
@@ -73,28 +79,28 @@ export default function Home() {
       )}
 
       {/* Info Section */}
-      <section className="py-16 border-t border-zinc-200">
+      <section className="py-16 border-t border-zinc-200 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>
               <span className="text-4xl mb-3 block">📦</span>
-              <h3 className="font-semibold text-zinc-900 mb-2">Multipack Only</h3>
-              <p className="text-sm text-zinc-600">
-                No singles here — every order is a mystery pack adventure!
+              <h3 className="font-semibold text-[var(--il-ink)] mb-2">Multipack Only</h3>
+              <p className="text-sm text-[var(--il-muted)]">
+                Every order is a multipack — more squish for your buck.
               </p>
             </div>
             <div>
               <span className="text-4xl mb-3 block">✨</span>
-              <h3 className="font-semibold text-zinc-900 mb-2">Glitter Inside</h3>
-              <p className="text-sm text-zinc-600">
-                Each squishy dumpling contains sparkly glitter filling.
+              <h3 className="font-semibold text-[var(--il-ink)] mb-2">Glitter Inside</h3>
+              <p className="text-sm text-[var(--il-muted)]">
+                Each squishy is filled with sparkly glitter magic.
               </p>
             </div>
             <div>
               <span className="text-4xl mb-3 block">🎁</span>
-              <h3 className="font-semibold text-zinc-900 mb-2">Gift Ready</h3>
-              <p className="text-sm text-zinc-600">
-                Perfect for birthdays, parties, or treating yourself.
+              <h3 className="font-semibold text-[var(--il-ink)] mb-2">Gift Ready</h3>
+              <p className="text-sm text-[var(--il-muted)]">
+                Perfect for birthdays, desk buddies, or treating yourself.
               </p>
             </div>
           </div>
