@@ -7,11 +7,16 @@ services:
     name: impulse-lane
     runtime: node
     plan: free
-    buildCommand: npm install && npm run build
-    startCommand: npm start
+    region: oregon
+    buildCommand: npm ci && npm run build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/
+    startCommand: node .next/standalone/server.js
     envVars:
       - key: NODE_ENV
         value: production
+      - key: PORT
+        value: 10000
+      - key: HOSTNAME
+        value: 0.0.0.0
       - key: STRIPE_SECRET_KEY
         sync: false  # Set manually in Render dashboard (secret)
       - key: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY

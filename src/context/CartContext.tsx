@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import type { Product } from '@/lib/products';
 
 export interface CartItem {
@@ -23,72 +23,78 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 const CART_STORAGE_KEY = 'impulse-lane-cart';
 
-export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  useEffect(() => {
+function readCartFromStorage(): CartItem[] {
+  if (typeof window === 'undefined') return [];
+  try {
     const stored = localStorage.getItem(CART_STORAGE_KEY);
-    if (stored) {
-      try {
-        setItems(JSON.parse(stored));
-      } catch {
-        localStorage.removeItem(CART_STORAGE_KEY);
-      }
-    }
-    setIsHydrated(true);
-  }, []);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+}
 
-  useEffect(() => {
-    if (isHydrated) {
-      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
-    }
-  }, [items, isHydrated]);
+function writeCartToStorage(items: CartItem[]): void {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+  }
+}
 
-  const getItemKey = (productId: string, variant?: string) => 
-    variant ? `${productId}-${variant}` : productId;
+export function CartProvider({ children }: { children: ReactNode }) {
+  const [items, setItems] = useState<CartItem[]>(readCartFromStorage);
 
-  const addItem = (product: Product, variant?: string) => {
+  const addItem = useCallback((product: Product, variant?: string) => {
     setItems(current => {
       const existingIndex = current.findIndex(
         item => item.product.id === product.id && item.variant === variant
       );
       
+      let updated: CartItem[];
       if (existingIndex >= 0) {
-        const updated = [...current];
+        updated = [...current];
         updated[existingIndex] = {
           ...updated[existingIndex],
           quantity: updated[existingIndex].quantity + 1
         };
-        return updated;
+      } else {
+        updated = [...current, { product, quantity: 1, variant }];
       }
       
-      return [...current, { product, quantity: 1, variant }];
+      writeCartToStorage(updated);
+      return updated;
     });
-  };
+  }, []);
 
-  const removeItem = (productId: string, variant?: string) => {
-    setItems(current => 
-      current.filter(item => !(item.product.id === productId && item.variant === variant))
-    );
-  };
+  const removeItem = useCallback((productId: string, variant?: string) => {
+    setItems(current => {
+      const updated = current.filter(
+        item => !(item.product.id === productId && item.variant === variant)
+      );
+      writeCartToStorage(updated);
+      return updated;
+    });
+  }, []);
 
-  const updateQuantity = (productId: string, quantity: number, variant?: string) => {
+  const updateQuantity = useCallback((productId: string, quantity: number, variant?: string) => {
     if (quantity <= 0) {
       removeItem(productId, variant);
       return;
     }
     
-    setItems(current =>
-      current.map(item =>
+    setItems(current => {
+      const updated = current.map(item =>
         item.product.id === productId && item.variant === variant
           ? { ...item, quantity }
           : item
-      )
-    );
-  };
+      );
+      writeCartToStorage(updated);
+      return updated;
+    });
+  }, [removeItem]);
 
-  const clearCart = () => setItems([]);
+  const clearCart = useCallback(() => {
+    setItems([]);
+    writeCartToStorage([]);
+  }, []);
 
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
   

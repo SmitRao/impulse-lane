@@ -27,7 +27,7 @@ A modern, mobile-first DTC storefront shell for impulse/collectible physical goo
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 20+ (required by Next.js 16)
 - npm
 - Stripe account (test mode)
 
@@ -118,9 +118,12 @@ stripe trigger checkout.session.completed
 3. Connect your GitHub repo
 4. Configure:
    - **Runtime**: Node
-   - **Build Command**: `npm install && npm run build`
-   - **Start Command**: `npm start`
+   - **Build Command**: `npm ci && npm run build && cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/`
+   - **Start Command**: `node .next/standalone/server.js`
 5. Add environment variables:
+   - `NODE_ENV=production`
+   - `PORT=10000`
+   - `HOSTNAME=0.0.0.0`
    - `STRIPE_SECRET_KEY` (secret)
    - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
    - `NEXT_PUBLIC_BASE_URL` (your Render URL, e.g., `https://impulse-lane.onrender.com`)

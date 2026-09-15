@@ -1,5 +1,5 @@
 import { ProductCard } from "@/components/ProductCard";
-import { getAllProducts, formatPrice } from "@/lib/products";
+import { getAllProducts } from "@/lib/products";
 import Link from "next/link";
 
 export default function Home() {
