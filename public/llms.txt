@@ -1,0 +1,49 @@
+# Impulse Lane
+
+> Glitter-filled dumpling squishies for stress relief and collecting.
+
+## About
+
+Impulse Lane sells glitter-filled dumpling (bao) shaped squishy collectibles. All products are adult collectible fidgets designed for ages 14 and up. These are novelty items for stress relief, not children's toys.
+
+Products are sold in multipacks only (2, 4, or 6 per pack). Each squishy contains visible glitter, beads, or crystal fill.
+
+## Key URLs
+
+- Homepage: https://impulse-lane.onrender.com/
+- About: https://impulse-lane.onrender.com/about
+- FAQ: https://impulse-lane.onrender.com/faq
+- Contact: https://impulse-lane.onrender.com/contact
+- Shipping Policy: https://impulse-lane.onrender.com/shipping
+- Returns Policy: https://impulse-lane.onrender.com/returns
+- Safety Information: https://impulse-lane.onrender.com/safety
+- Privacy Policy: https://impulse-lane.onrender.com/privacy
+- Terms of Service: https://impulse-lane.onrender.com/terms
+
+## Products
+
+Featured multipacks:
+- Glitter Dumpling Surprise 6-Pack: https://impulse-lane.onrender.com/product/glitter-dumpling-surprise-6-pack
+- Bao-in-a-Steamer Multipack: https://impulse-lane.onrender.com/product/bao-in-a-steamer-multipack
+- Glow Glitter Bead Bao 6-Pack: https://impulse-lane.onrender.com/product/glow-glitter-bead-bao-6-pack
+- Jumbo Glitter Bao Duo: https://impulse-lane.onrender.com/product/jumbo-glitter-bao-duo
+
+## Shipping
+
+- Ships within United States only
+- Flat rate: $4.99 (free on orders $35+)
+- Processing: 2-4 business days
+- Delivery: 5-10 business days after shipping
+
+## Returns
+
+- Unopened: 30 days for product price refund (buyer pays return shipping)
+- Damaged/defective: 14 days with photos for replacement or refund
+- Opened packs: Not returnable except for defects
+
+## Important Notes
+
+- Age 14+ adult collectible fidgets
+- Not children's toys
+- Choking hazard for children under 3
+- Site is currently in Stripe test mode (not fulfilling real orders)

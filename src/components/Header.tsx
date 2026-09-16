@@ -34,6 +34,12 @@ export function Header() {
               About
             </Link>
             <Link 
+              href="/faq" 
+              className="text-sm font-medium text-[var(--il-muted)] hover:text-[var(--il-pink)] transition-colors"
+            >
+              FAQ
+            </Link>
+            <Link 
               href="/contact" 
               className="text-sm font-medium text-[var(--il-muted)] hover:text-[var(--il-pink)] transition-colors"
             >
@@ -122,6 +128,13 @@ export function Header() {
                 About
               </Link>
               <Link 
+                href="/faq" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="px-4 py-2 text-[var(--il-ink)] hover:bg-[var(--il-cream)] rounded-lg transition-colors"
+              >
+                FAQ
+              </Link>
+              <Link 
                 href="/contact" 
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-4 py-2 text-[var(--il-ink)] hover:bg-[var(--il-cream)] rounded-lg transition-colors"
@@ -149,11 +162,11 @@ export function Header() {
                 Shipping
               </Link>
               <Link 
-                href="/refunds" 
+                href="/returns" 
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-4 py-2 text-[var(--il-ink)] hover:bg-[var(--il-cream)] rounded-lg transition-colors"
               >
-                Returns & Refunds
+                Returns
               </Link>
               <Link 
                 href="/privacy" 

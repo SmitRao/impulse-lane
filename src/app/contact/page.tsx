@@ -143,18 +143,26 @@ export default function ContactPage() {
             <ul className="space-y-2">
               <li>
                 <Link 
-                  href="/shipping" 
+                  href="/faq" 
                   className="text-[var(--il-pink)] hover:underline flex items-center gap-2"
                 >
-                  <span>🚚</span> Shipping Policy
+                  <span>❓</span> FAQ
                 </Link>
               </li>
               <li>
                 <Link 
-                  href="/refunds" 
+                  href="/shipping" 
                   className="text-[var(--il-pink)] hover:underline flex items-center gap-2"
                 >
-                  <span>↩️</span> Returns & Refunds
+                  <span>🚚</span> Shipping
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/returns" 
+                  className="text-[var(--il-pink)] hover:underline flex items-center gap-2"
+                >
+                  <span>↩️</span> Returns
                 </Link>
               </li>
               <li>

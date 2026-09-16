@@ -18,11 +18,37 @@ const nunito = Nunito_Sans({
   weight: ["400", "500", "600", "700"],
 });
 
+const siteUrl = "https://impulse-lane.onrender.com";
+
 export const metadata: Metadata = {
-  title: "Impulse Lane — Glitter Dumpling Squishies",
-  description: "Collect glitter-filled dumpling squishies! Fun novelty collectibles in multipacks. Squeeze the stress away.",
+  title: {
+    default: "Impulse Lane — Glitter Dumpling Squishies",
+    template: "%s | Impulse Lane",
+  },
+  description: "Collect glitter-filled dumpling squishies! Fun novelty collectibles in multipacks. Squeeze the stress away. Age 14+ adult collectible fidgets.",
+  metadataBase: new URL(siteUrl),
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: "/favicon.svg",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteUrl,
+    siteName: "Impulse Lane",
+    title: "Impulse Lane — Glitter Dumpling Squishies",
+    description: "Collect glitter-filled dumpling squishies! Fun novelty collectibles in multipacks. Squeeze the stress away.",
+  },
+  twitter: {
+    card: "summary",
+    title: "Impulse Lane — Glitter Dumpling Squishies",
+    description: "Collect glitter-filled dumpling squishies! Fun novelty collectibles in multipacks.",
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
