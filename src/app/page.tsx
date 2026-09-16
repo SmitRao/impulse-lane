@@ -2,6 +2,20 @@ import { ProductCard } from "@/components/ProductCard";
 import { getFeaturedProducts } from "@/lib/products";
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  openGraph: {
+    images: [
+      {
+        url: "/products/il-bao-steamer-set.jpg",
+        width: 1200,
+        height: 1200,
+        alt: "Impulse Lane - Glitter Dumpling Squishies",
+      },
+    ],
+  },
+};
 
 export default function Home() {
   const featuredProducts = getFeaturedProducts();
@@ -69,6 +83,71 @@ export default function Home() {
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* UGC/ASMR Embed Section - Placeholder for future content */}
+      <section className="py-16 bg-white border-t border-zinc-200">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-[var(--il-ink)] mb-2">Squishy Sounds Coming Soon</h2>
+            <p className="text-[var(--il-muted)]">ASMR squeeze videos and customer unboxings — launching soon.</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* ASMR Video Placeholder */}
+            <div className="aspect-video bg-zinc-100 rounded-2xl flex flex-col items-center justify-center border-2 border-dashed border-zinc-300">
+              <span className="text-4xl mb-3">🎥</span>
+              <p className="text-sm text-[var(--il-muted)] font-medium">ASMR squeeze video</p>
+              <p className="text-xs text-[var(--il-muted)] mt-1">Coming soon</p>
+            </div>
+            
+            {/* UGC Video Placeholder */}
+            <div className="aspect-video bg-zinc-100 rounded-2xl flex flex-col items-center justify-center border-2 border-dashed border-zinc-300">
+              <span className="text-4xl mb-3">📱</span>
+              <p className="text-sm text-[var(--il-muted)] font-medium">Customer unboxing</p>
+              <p className="text-xs text-[var(--il-muted)] mt-1">UGC coming soon</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Collect Board Section */}
+      <section className="py-16 bg-[var(--il-gummy)]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-[var(--il-ink)] mb-2">Collect the Whole Board</h2>
+            <p className="text-[var(--il-muted)]">
+              Each pack is a surprise mix of colors and styles. Trade with friends or keep hunting for your favorites.
+            </p>
+            <p className="text-sm text-[var(--il-grape)] mt-2 font-medium">
+              Duplicates possible — that&apos;s part of the blind-box fun!
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
+            {/* Color/variant collection display */}
+            {['Pastel Pink', 'Cloud White', 'Mint Green', 'Lavender', 'Peach', 'Sky Blue', 'Lemon', 'Rose Gold', 'Coral', 'Sage', 'Lilac', 'Butter'].map((color, idx) => (
+              <div key={color} className="flex flex-col items-center">
+                <div 
+                  className="w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow-md flex items-center justify-center text-2xl"
+                  style={{ 
+                    backgroundColor: [
+                      '#FFD1DC', '#F5F5F5', '#98D8C8', '#E6E6FA', '#FFDAB9', '#87CEEB',
+                      '#FFFACD', '#F5C6C6', '#FF7F7F', '#9DC183', '#C8A2C8', '#FFFDD0'
+                    ][idx] 
+                  }}
+                >
+                  🥟
+                </div>
+                <span className="text-xs text-[var(--il-muted)] mt-2 text-center">{color}</span>
+              </div>
+            ))}
+          </div>
+          
+          <p className="text-center text-sm text-[var(--il-muted)] mt-6">
+            Colors shown are examples — actual colors vary by pack and availability.
+          </p>
         </div>
       </section>
 
