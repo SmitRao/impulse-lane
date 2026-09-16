@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import type { Product } from '@/lib/products';
 import { getAllProducts } from '@/lib/products';
 
@@ -73,13 +73,12 @@ function writeCartToStorage(items: CartItem[]): void {
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
-
-  useEffect(() => {
+  const [items, setItems] = useState<CartItem[]>(() => {
+    if (typeof window === 'undefined') return [];
     const validatedItems = readCartFromStorage();
-    setItems(validatedItems);
     writeCartToStorage(validatedItems);
-  }, []);
+    return validatedItems;
+  });
 
   const addItem = useCallback((product: Product, variant?: string) => {
     setItems(current => {
