@@ -3,11 +3,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
-import { formatPrice } from '@/lib/products';
-import { useState } from 'react';
+import { formatPrice, getAllProducts } from '@/lib/products';
+import { useState, useMemo } from 'react';
 
 export default function CartPage() {
-  const { items, removeItem, updateQuantity, subtotal, clearCart } = useCart();
+  const { items, removeItem, updateQuantity, subtotal, clearCart, addItem } = useCart();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,6 +16,25 @@ export default function CartPage() {
   const total = subtotal + shippingCost;
   const progressToFreeShipping = Math.min((subtotal / shippingThreshold) * 100, 100);
   const amountToFreeShipping = Math.max(shippingThreshold - subtotal, 0);
+
+  const crossSellProducts = useMemo(() => {
+    if (subtotal >= shippingThreshold) return [];
+    
+    const allProducts = getAllProducts();
+    const cartProductIds = new Set(items.map(item => item.product.id));
+    
+    const eligibleProducts = allProducts
+      .filter(p => !cartProductIds.has(p.id))
+      .filter(p => p.price <= amountToFreeShipping + 10)
+      .sort((a, b) => {
+        const aDiff = Math.abs(a.price - amountToFreeShipping);
+        const bDiff = Math.abs(b.price - amountToFreeShipping);
+        return aDiff - bDiff;
+      })
+      .slice(0, 2);
+    
+    return eligibleProducts;
+  }, [subtotal, items, amountToFreeShipping]);
 
   const handleCheckout = async () => {
     setIsLoading(true);
@@ -171,6 +190,49 @@ export default function CartPage() {
             >
               Clear Cart
             </button>
+
+            {/* Cross-sell for Free Shipping */}
+            {crossSellProducts.length > 0 && amountToFreeShipping > 0 && (
+              <div className="mt-6 bg-[var(--il-gummy)] rounded-xl p-4">
+                <h3 className="font-semibold text-[var(--il-ink)] mb-3 flex items-center gap-2">
+                  <span>🚚</span>
+                  Add {formatPrice(amountToFreeShipping)} more for FREE shipping!
+                </h3>
+                <div className="space-y-3">
+                  {crossSellProducts.map((product) => (
+                    <div key={product.id} className="flex items-center gap-3 bg-white rounded-lg p-3">
+                      <div className="relative w-14 h-14 bg-wash rounded-lg overflow-hidden flex-shrink-0">
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          fill
+                          unoptimized
+                          className="object-contain p-1"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <Link 
+                          href={`/product/${product.slug}`}
+                          className="font-medium text-sm text-[var(--il-ink)] hover:text-[var(--il-pink)] line-clamp-1"
+                        >
+                          {product.name}
+                        </Link>
+                        <p className="text-sm text-[var(--il-muted)]">{formatPrice(product.price)}</p>
+                      </div>
+                      <button
+                        onClick={() => addItem(product, product.variants?.[0]?.label)}
+                        className="px-3 py-1.5 text-xs font-medium bg-[var(--il-pink)] text-white rounded-full hover:bg-opacity-90 transition-colors whitespace-nowrap"
+                      >
+                        + Add
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-[var(--il-muted)] mt-3 text-center">
+                  Free shipping on orders $35+
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Order Summary */}
