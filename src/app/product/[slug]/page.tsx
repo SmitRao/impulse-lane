@@ -4,20 +4,9 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
-import { getProductBySlug, getAllProducts, formatPrice } from '@/lib/products';
+import { getProductBySlug, getAllProducts, formatPrice, getValueCallout, getIdentityBadges } from '@/lib/products';
 import { useCart } from '@/context/CartContext';
 import { ProductCard } from '@/components/ProductCard';
-
-function getBadgeClass(badge: string): string {
-  const badgeLower = badge.toLowerCase();
-  if (badgeLower.includes('best seller')) return 'badge-bestseller';
-  if (badgeLower.includes('limited')) return 'badge-limited';
-  if (badgeLower.includes('glow')) return 'badge-glow';
-  if (badgeLower.includes('gift')) return 'badge-gift';
-  if (badgeLower.includes('premium')) return 'badge-premium';
-  if (badgeLower.includes('entry')) return 'bg-[var(--il-mint)] text-[var(--il-ink)]';
-  return 'bg-[var(--il-muted)] text-white';
-}
 
 export default function ProductPage() {
   const params = useParams();
@@ -30,6 +19,8 @@ export default function ProductPage() {
   );
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   if (!product) {
     return (
@@ -59,7 +50,40 @@ export default function ProductPage() {
     .filter(p => p.id !== product.id)
     .slice(0, 3);
 
-  const displayBadges = product.badges.slice(0, 2);
+  const identityBadges = getIdentityBadges(product);
+  const valueCallout = getValueCallout(product);
+
+  const galleryImages = product.gallery && product.gallery.length > 0 
+    ? product.gallery 
+    : [product.image];
+  
+  const gallerySlots: (string | null)[] = [...galleryImages];
+  while (gallerySlots.length < 4) {
+    gallerySlots.push(null);
+  }
+
+  const faqItems = [
+    {
+      question: "What do they feel like?",
+      answer: "Our squishies have a soft, slow-rebound feel — like cloud dough or stress balls. The TPR material is smooth and satisfying to squeeze, with visible glitter or beads swirling inside."
+    },
+    {
+      question: "Could I get duplicates in a pack?",
+      answer: "Yes, duplicates are possible. Each pack contains a random assortment of colors and styles. That's part of the blind-box collecting fun — trade with friends or build a colorful collection!"
+    },
+    {
+      question: "How do I care for them?",
+      answer: "Wipe clean with a damp cloth if needed. Do not submerge in water. Avoid sharp objects and extreme heat. Store away from direct sunlight to preserve the material."
+    },
+    {
+      question: "Are they safe?",
+      answer: `These are Age ${product.ageGrade} adult collectible fidgets, not children's toys. Choking hazard — small parts. Contains glitter in sealed TPR shell. Do not puncture or ingest. See our full safety page for details.`
+    },
+    {
+      question: "What's your return policy?",
+      answer: "Unopened packs can be returned within 30 days for a refund of the product price (return shipping is on you unless we made a mistake). Damaged or defective items? Email us with photos within 14 days and we'll replace or refund."
+    }
+  ];
 
   return (
     <div className="bg-[var(--il-cream)] py-8 sm:py-12">
@@ -76,51 +100,119 @@ export default function ProductPage() {
         </nav>
 
         {/* Product Detail */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          {/* Image */}
-          <div className="relative aspect-square bg-wash rounded-3xl overflow-hidden">
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              unoptimized
-              className="object-contain p-12"
-              priority
-            />
-            {/* Badges */}
-            {displayBadges.length > 0 && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-16">
+          {/* Gallery */}
+          <div className="space-y-4">
+            {/* Main Image */}
+            <div className="relative aspect-square bg-wash rounded-3xl overflow-hidden">
+              {gallerySlots[selectedImageIndex] ? (
+                <Image
+                  src={gallerySlots[selectedImageIndex]!}
+                  alt={product.name}
+                  fill
+                  unoptimized
+                  className="object-contain p-8"
+                  priority
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <div className="text-center text-[var(--il-muted)]">
+                    <span className="text-4xl block mb-2">📷</span>
+                    <span className="text-sm">More photos coming soon</span>
+                  </div>
+                </div>
+              )}
+              {/* Identity Badges */}
               <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                {displayBadges.map((badge) => (
-                  <span key={badge} className={`badge ${getBadgeClass(badge)}`}>
-                    {badge}
+                {identityBadges.slice(0, 3).map((badge) => (
+                  <span key={badge.label} className={`px-2.5 py-1 text-xs font-semibold rounded-full ${badge.className}`}>
+                    {badge.label}
                   </span>
                 ))}
               </div>
-            )}
-            {/* Age grade + Pack size */}
-            <div className="absolute bottom-4 right-4 flex gap-2">
-              <span className="px-2 py-1 bg-[var(--il-grape)] text-white text-sm font-bold rounded-full">
-                {product.ageGrade}
-              </span>
-              <span className="chip-gummy text-lg">
-                ×{product.packSize}
-              </span>
+              {/* Pack size */}
+              <div className="absolute bottom-4 right-4">
+                <span className="chip-gummy text-lg">
+                  ×{product.packSize}
+                </span>
+              </div>
+            </div>
+            
+            {/* Thumbnail Grid */}
+            <div className="grid grid-cols-4 gap-2">
+              {gallerySlots.slice(0, 4).map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => img && setSelectedImageIndex(idx)}
+                  className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-colors ${
+                    selectedImageIndex === idx 
+                      ? 'border-[var(--il-pink)]' 
+                      : 'border-transparent hover:border-zinc-300'
+                  } ${!img ? 'bg-zinc-100 cursor-default' : 'bg-wash'}`}
+                  disabled={!img}
+                >
+                  {img ? (
+                    <Image
+                      src={img}
+                      alt={`${product.name} view ${idx + 1}`}
+                      fill
+                      unoptimized
+                      className="object-contain p-2"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-zinc-400 text-xl">
+                      +
+                    </div>
+                  )}
+                </button>
+              ))}
             </div>
           </div>
 
           {/* Details */}
           <div className="flex flex-col">
-            <h1 className="text-3xl sm:text-4xl font-bold text-[var(--il-ink)] mb-4">
+            <h1 className="text-3xl sm:text-4xl font-bold text-[var(--il-ink)] mb-3">
               {product.name}
             </h1>
             
-            <p className="text-lg text-[var(--il-muted)] mb-6">
+            <p className="text-lg text-[var(--il-muted)] mb-4">
               {product.shortBlurb}
             </p>
 
-            <div className="flex items-center gap-3 mb-6">
-              <span className="text-3xl font-bold text-[var(--il-ink)]">
-                {formatPrice(product.price)}
+            {/* Price + Value Callout */}
+            <div className="mb-6">
+              <div className="flex items-center gap-3 mb-2">
+                <span className="text-3xl font-bold text-[var(--il-ink)]">
+                  {formatPrice(product.price)}
+                </span>
+              </div>
+              {valueCallout && (
+                <p className="text-sm text-[var(--il-mint)] font-medium bg-[var(--il-mint)] bg-opacity-15 px-3 py-1.5 rounded-lg inline-block">
+                  💡 {valueCallout}
+                </p>
+              )}
+            </div>
+
+            {/* Trust Strip */}
+            <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-[var(--il-muted)] mb-6 py-4 border-y border-zinc-200">
+              <span className="flex items-center gap-1.5">
+                <span>🚚</span>
+                <span>Free ship $35+</span>
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span>📦</span>
+                <span>Ships 2–4 biz days</span>
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span>↩️</span>
+                <span>30-day unopened returns</span>
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="text-[var(--il-grape)] font-semibold">{product.ageGrade}</span>
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span>✨</span>
+                <span>Sealed glitter</span>
               </span>
             </div>
 
@@ -170,98 +262,123 @@ export default function ProductPage() {
               </div>
             </div>
 
-            {/* Add to Cart - Sticky on mobile */}
-            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-zinc-200 p-4 sm:relative sm:bg-transparent sm:border-0 sm:p-0 z-20 shadow-[0_-4px_12px_rgba(0,0,0,0.1)] sm:shadow-none">
-              <div className="max-w-6xl mx-auto flex items-center gap-3 sm:block">
-                <div className="sm:hidden text-sm">
-                  <span className="font-bold text-[var(--il-ink)]">{formatPrice(product.price)}</span>
-                </div>
-                <button
-                  onClick={handleAddToCart}
-                  className={`flex-1 sm:w-full py-3 sm:py-4 rounded-full font-medium text-base sm:text-lg transition-colors ${
-                    added
-                      ? 'bg-[var(--il-mint)] text-[var(--il-ink)]'
-                      : 'btn-pink'
-                  }`}
-                >
-                  {added ? '✓ Added!' : 'Add to Cart'}
-                </button>
-              </div>
+            {/* Desktop Add to Cart */}
+            <div className="hidden sm:block mb-6">
+              <button
+                onClick={handleAddToCart}
+                className={`w-full py-4 rounded-full font-medium text-lg transition-colors ${
+                  added
+                    ? 'bg-[var(--il-mint)] text-[var(--il-ink)]'
+                    : 'btn-pink'
+                }`}
+              >
+                {added ? '✓ Added!' : 'Add to Cart'}
+              </button>
+              <Link
+                href="/cart"
+                className="mt-3 block text-center text-sm text-[var(--il-muted)] hover:text-[var(--il-pink)] underline"
+              >
+                View Cart
+              </Link>
             </div>
-            {/* Spacer for fixed bottom bar on mobile */}
-            <div className="h-20 sm:hidden" />
 
-            {/* Cart link */}
-            <Link
-              href="/cart"
-              className="mt-4 text-center text-sm text-[var(--il-muted)] hover:text-[var(--il-pink)] underline"
-            >
-              View Cart
-            </Link>
-
-            {/* Features */}
-            {product.features && product.features.length > 0 && (
-              <div className="mt-8 pt-8 border-t border-zinc-200">
-                <h3 className="font-semibold text-[var(--il-ink)] mb-4">Features</h3>
-                <ul className="space-y-2">
-                  {product.features.map((feature, index) => (
-                    <li key={index} className="flex items-start gap-2 text-[var(--il-muted)]">
-                      <span className="text-[var(--il-pink)]">✓</span>
-                      <span>{feature}</span>
+            {/* What's in the Pack */}
+            {product.packContents && (
+              <div className="bg-white rounded-2xl p-5 mb-6 shadow-sm">
+                <h3 className="font-semibold text-[var(--il-ink)] mb-3 flex items-center gap-2">
+                  <span>📦</span>
+                  What&apos;s in the Pack
+                </h3>
+                <ul className="space-y-2 text-sm text-[var(--il-muted)]">
+                  <li className="flex items-center gap-2">
+                    <span className="text-[var(--il-pink)]">•</span>
+                    <span><strong>Count:</strong> {product.packContents.count} squishies</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-[var(--il-pink)]">•</span>
+                    <span><strong>Size:</strong> {product.packContents.sizeCm}</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-[var(--il-pink)]">•</span>
+                    <span><strong>Fill:</strong> {product.packContents.fill}</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="text-[var(--il-pink)]">•</span>
+                    <span><strong>Material:</strong> {product.packContents.material}</span>
+                  </li>
+                  {product.packContents.notEdible && (
+                    <li className="flex items-center gap-2 text-[var(--il-grape)]">
+                      <span>⚠️</span>
+                      <span><strong>Not edible</strong> — decorative fidget only</span>
                     </li>
-                  ))}
+                  )}
                 </ul>
               </div>
             )}
 
-            {/* Product Info */}
-            <div className="mt-8 pt-8 border-t border-zinc-200 space-y-4">
-              <div className="flex items-start gap-3">
-                <span className="text-lg">📦</span>
-                <div>
-                  <p className="font-medium text-[var(--il-ink)]">Mystery Blind Box</p>
-                  <p className="text-sm text-[var(--il-muted)]">Each dumpling is a random surprise!</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="text-lg">✨</span>
-                <div>
-                  <p className="font-medium text-[var(--il-ink)]">Glitter Filled</p>
-                  <p className="text-sm text-[var(--il-muted)]">Sealed construction keeps sparkles inside.</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <span className="text-lg">🚚</span>
-                <div>
-                  <p className="font-medium text-[var(--il-ink)]">Flat Rate Shipping</p>
-                  <p className="text-sm text-[var(--il-muted)]">$4.99 under $35, free $35+</p>
-                </div>
+            {/* FAQ Accordion */}
+            <div className="border-t border-zinc-200 pt-6">
+              <h3 className="font-semibold text-[var(--il-ink)] mb-4">Frequently Asked Questions</h3>
+              <div className="space-y-2">
+                {faqItems.map((item, idx) => (
+                  <div key={idx} className="border border-zinc-200 rounded-xl overflow-hidden">
+                    <button
+                      onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                      className="w-full flex items-center justify-between p-4 text-left hover:bg-zinc-50 transition-colors"
+                    >
+                      <span className="font-medium text-[var(--il-ink)]">{item.question}</span>
+                      <span className={`text-[var(--il-muted)] transition-transform ${openFaq === idx ? 'rotate-180' : ''}`}>
+                        ▼
+                      </span>
+                    </button>
+                    {openFaq === idx && (
+                      <div className="px-4 pb-4 text-sm text-[var(--il-muted)]">
+                        {item.answer}
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Safety Info */}
-            <div className="mt-8 pt-8 border-t border-zinc-200">
-              <div className="bg-yellow-50 border border-yellow-300 rounded-xl p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="px-2 py-0.5 bg-[var(--il-grape)] text-white text-xs font-bold rounded-full">
-                    {product.ageGrade}
-                  </span>
-                  <span className="font-semibold text-[var(--il-ink)] text-sm">Adult Collectible</span>
-                </div>
-                <p className="text-xs text-[var(--il-muted)] mb-2">
-                  <strong>Age {product.ageGrade} adult collectible fidget — not a children&apos;s toy.</strong>
-                </p>
-                <p className="text-xs text-[var(--il-muted)] mb-2">
-                  ⚠️ Choking hazard — small parts / glitter fill. Not for children under 3.
-                  Contains glitter in sealed TPR/TPE shell. Do not puncture or ingest.
-                </p>
-                <Link href="/safety" className="text-xs text-[var(--il-pink)] hover:underline">
-                  Full safety information →
-                </Link>
-              </div>
+            {/* Safety Link */}
+            <div className="mt-6 pt-6 border-t border-zinc-200">
+              <Link 
+                href="/safety" 
+                className="text-sm text-[var(--il-pink)] hover:underline flex items-center gap-2"
+              >
+                <span>🛡️</span>
+                <span>Full safety information →</span>
+              </Link>
             </div>
           </div>
         </div>
+
+        {/* Mobile Sticky ATC */}
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-zinc-200 p-4 sm:hidden z-20 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-3">
+                <span className="text-xl font-bold text-[var(--il-ink)]">{formatPrice(product.price)}</span>
+                <span className="px-2 py-0.5 bg-[var(--il-grape)] text-white text-xs font-bold rounded-full">
+                  {product.ageGrade}
+                </span>
+              </div>
+            </div>
+            <button
+              onClick={handleAddToCart}
+              className={`w-full py-3 rounded-full font-medium text-base transition-colors ${
+                added
+                  ? 'bg-[var(--il-mint)] text-[var(--il-ink)]'
+                  : 'btn-pink'
+              }`}
+            >
+              {added ? '✓ Added!' : 'Add to Cart'}
+            </button>
+          </div>
+        </div>
+        {/* Spacer for fixed bottom bar on mobile */}
+        <div className="h-28 sm:hidden" />
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (

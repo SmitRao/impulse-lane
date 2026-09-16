@@ -7,6 +7,9 @@
     "price": 19.99,
     "packSize": 6,
     "image": "/products/il-dumpling-glitter-6.jpg",
+    "gallery": [
+      "/products/il-dumpling-glitter-6.jpg"
+    ],
     "variants": [
       { "id": "assorted", "label": "Assorted glitter colors", "sku": "IL-GD-6-ASST" },
       { "id": "pastel", "label": "Pastel glitter mix", "sku": "IL-GD-6-PAST" }
@@ -18,7 +21,15 @@
       "Pocket fidget for desk, bag, or car",
       "Age 14+ adult collectible fidget"
     ],
+    "packContents": {
+      "count": 6,
+      "sizeCm": "~8 cm each",
+      "fill": "Glitter sparkle",
+      "material": "TPR (thermoplastic rubber)",
+      "notEdible": true
+    },
     "badges": [],
+    "identity": ["glitter"],
     "artDirection": "Overhead 6 glitter bao on kraft; hand squeeze mid-glitter swirl",
     "ageGrade": "14+",
     "featured": true
@@ -31,6 +42,9 @@
     "price": 22.99,
     "packSize": 4,
     "image": "/products/il-bao-steamer-set.jpg",
+    "gallery": [
+      "/products/il-bao-steamer-set.jpg"
+    ],
     "variants": [
       { "id": "tpr-steamer-4", "label": "4 bao + steamer vibes", "sku": "IL-BAO-STM-4" },
       { "id": "crystal-gold", "label": "Golden powder crystal mix", "sku": "IL-BAO-CRY-4" }
@@ -42,7 +56,15 @@
       "Strong gift / unboxing moment",
       "Age 14+ adult collectible fidget"
     ],
+    "packContents": {
+      "count": 4,
+      "sizeCm": "~8–8.5 cm each",
+      "fill": "Crystal bead / glitter",
+      "material": "TPR (thermoplastic rubber)",
+      "notEdible": true
+    },
     "badges": [],
+    "identity": ["steamer", "gifting"],
     "artDirection": "Mini bamboo steamer open with 4 glitter bao",
     "ageGrade": "14+",
     "featured": true
@@ -55,6 +77,9 @@
     "price": 18.99,
     "packSize": 6,
     "image": "/products/il-glow-glitter-bao-6.jpg",
+    "gallery": [
+      "/products/il-glow-glitter-bao-6.jpg"
+    ],
     "variants": [
       { "id": "assorted-faces", "label": "Assorted cute faces", "sku": "IL-GLOW-6-ASST" }
     ],
@@ -65,7 +90,15 @@
       "No batteries required",
       "Age 14+ adult collectible fidget"
     ],
+    "packContents": {
+      "count": 6,
+      "sizeCm": "~5.5 cm each",
+      "fill": "Glitter beads + glow",
+      "material": "TPR (thermoplastic rubber)",
+      "notEdible": true
+    },
     "badges": [],
+    "identity": ["glow", "glitter"],
     "artDirection": "Split day desk + night glow of same 6-pack",
     "ageGrade": "14+",
     "featured": true
@@ -78,6 +111,9 @@
     "price": 24.99,
     "packSize": 2,
     "image": "/products/il-jumbo-glitter-bao-2.jpg",
+    "gallery": [
+      "/products/il-jumbo-glitter-bao-2.jpg"
+    ],
     "variants": [
       { "id": "rainbow", "label": "Rainbow glitter duo", "sku": "IL-JUMBO-2-RBW" },
       { "id": "mystery", "label": "Mystery jumbo duo", "sku": "IL-JUMBO-2-MYS" }
@@ -89,7 +125,15 @@
       "Desk statement piece",
       "Age 14+ adult collectible fidget"
     ],
+    "packContents": {
+      "count": 2,
+      "sizeCm": "~8.5–15 cm each",
+      "fill": "Rainbow glitter",
+      "material": "TPR (thermoplastic rubber)",
+      "notEdible": true
+    },
     "badges": [],
+    "identity": ["jumbo", "glitter"],
     "artDirection": "Two oversized glitter baos with hand for scale",
     "ageGrade": "14+",
     "featured": true

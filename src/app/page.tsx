@@ -1,6 +1,7 @@
 import { ProductCard } from "@/components/ProductCard";
 import { getFeaturedProducts } from "@/lib/products";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Home() {
   const featuredProducts = getFeaturedProducts();
@@ -8,33 +9,52 @@ export default function Home() {
   return (
     <div className="bg-[var(--il-cream)]">
       {/* Hero Section */}
-      <section className="bg-wash py-16 sm:py-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          {/* Hero illustration slot */}
-          <div className="w-32 h-32 mx-auto mb-6 bg-white rounded-full flex items-center justify-center shadow-lg">
-            <span className="text-6xl">🥟✨</span>
+      <section className="bg-wash py-12 sm:py-20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            {/* Hero Image */}
+            <div className="relative aspect-square max-w-md mx-auto lg:max-w-none lg:order-2">
+              <div className="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl">
+                <Image
+                  src="/products/il-bao-steamer-set.jpg"
+                  alt="Bao steamer set with glitter squishies"
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              </div>
+            </div>
+            
+            {/* Hero Text */}
+            <div className="text-center lg:text-left lg:order-1">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[var(--il-ink)] mb-4">
+                Glitter Dumpling Squishies
+              </h1>
+              <p className="text-lg text-[var(--il-muted)] max-w-xl mx-auto lg:mx-0 mb-6">
+                Squeeze the stress away with glitter-filled bao squishies. 
+                Collect, fidget, and share the squishy satisfaction.
+              </p>
+              
+              {/* Chips */}
+              <div className="flex flex-wrap gap-2 justify-center lg:justify-start mb-6">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[var(--il-grape)] text-white">
+                  Age 14+
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[var(--il-mint)] text-[var(--il-ink)]">
+                  Free Shipping $35+
+                </span>
+              </div>
+              
+              {/* CTA */}
+              <Link
+                href="#products"
+                className="inline-flex items-center justify-center px-8 py-4 btn-pink text-lg"
+              >
+                Shop Multipacks
+              </Link>
+            </div>
           </div>
-          
-          <h1 className="text-4xl sm:text-5xl font-bold text-[var(--il-ink)] mb-4">
-            Glitter Dumpling Squishies
-          </h1>
-          <p className="text-lg text-[var(--il-muted)] max-w-2xl mx-auto mb-8">
-            Squeeze the stress away with glitter-filled bao squishies. 
-            Collect, fidget, and share the squishy satisfaction.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="#products"
-              className="inline-flex items-center justify-center px-6 py-3 btn-pink text-lg"
-            >
-              Shop Multipacks
-            </Link>
-          </div>
-          
-          {/* AOV nudge */}
-          <p className="mt-8 text-sm text-[var(--il-muted)]">
-            💡 Spend $35+ for free shipping!
-          </p>
         </div>
       </section>
 
