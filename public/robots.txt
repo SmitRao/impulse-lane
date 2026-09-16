@@ -1,0 +1,8 @@
+# Impulse Lane - Glitter Dumpling Squishies
+# https://impulse-lane.onrender.com
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://impulse-lane.onrender.com/sitemap.xml

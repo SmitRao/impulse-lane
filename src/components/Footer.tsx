@@ -35,18 +35,23 @@ export function Footer() {
             <h3 className="font-semibold text-[var(--il-ink)] mb-4">Support</h3>
             <ul className="space-y-2">
               <li>
+                <Link href="/faq" className="text-sm text-[var(--il-muted)] hover:text-[var(--il-pink)]">
+                  FAQ
+                </Link>
+              </li>
+              <li>
                 <Link href="/contact" className="text-sm text-[var(--il-muted)] hover:text-[var(--il-pink)]">
                   Contact Us
                 </Link>
               </li>
               <li>
                 <Link href="/shipping" className="text-sm text-[var(--il-muted)] hover:text-[var(--il-pink)]">
-                  Shipping Policy
+                  Shipping
                 </Link>
               </li>
               <li>
-                <Link href="/refunds" className="text-sm text-[var(--il-muted)] hover:text-[var(--il-pink)]">
-                  Returns & Refunds
+                <Link href="/returns" className="text-sm text-[var(--il-muted)] hover:text-[var(--il-pink)]">
+                  Returns
                 </Link>
               </li>
               <li>
