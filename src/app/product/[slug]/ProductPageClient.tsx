@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getProductBySlug, getAllProducts, formatPrice, getValueCallout, getIdentityBadges } from '@/lib/products';
 import { useCart } from '@/context/CartContext';
 import { ProductCard } from '@/components/ProductCard';
@@ -24,6 +24,14 @@ export default function ProductPageClient({ slug }: ProductPageClientProps) {
   const [added, setAdded] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  // Lets the footer make room for the mobile sticky add-to-cart bar.
+  useEffect(() => {
+    document.body.dataset.stickyAtc = 'true';
+    return () => {
+      delete document.body.dataset.stickyAtc;
+    };
+  }, []);
 
   if (!product) {
     return (
@@ -112,14 +120,14 @@ export default function ProductPageClient({ slug }: ProductPageClientProps) {
           <div className="lg:col-span-7">
             <div className="lg:sticky lg:top-24">
               {/* Main Image */}
-              <div className="il-frame relative aspect-square bg-wash">
+              <div className="il-frame relative aspect-square bg-[var(--il-shell)]">
                 {gallerySlots[selectedImageIndex] ? (
                   <Image
                     src={gallerySlots[selectedImageIndex]!}
                     alt={product.name}
                     fill
                     unoptimized
-                    className="object-contain p-8"
+                    className="object-contain p-4 sm:p-8"
                     loading="eager"
                     fetchPriority="high"
                     sizes="(max-width: 1024px) 100vw, 55vw"
@@ -157,7 +165,7 @@ export default function ProductPageClient({ slug }: ProductPageClientProps) {
                       selectedImageIndex === idx && img
                         ? 'border-[var(--il-pink)]'
                         : 'border-[var(--il-line)] hover:border-[var(--il-line-strong)]'
-                    } ${!img ? 'cursor-default bg-[var(--il-shell)]' : 'bg-wash'}`}
+                    } ${!img ? 'cursor-default bg-[var(--il-sand)]' : 'bg-[var(--il-shell)]'}`}
                     disabled={!img}
                   >
                     {img ? (
@@ -478,8 +486,8 @@ export default function ProductPageClient({ slug }: ProductPageClientProps) {
           {added ? '✓ Added!' : 'Add to Cart'}
         </button>
       </div>
-      {/* Spacer for fixed bottom bar on mobile */}
-      <div className="h-32 sm:hidden" aria-hidden />
+      {/* Keeps the last section clear of the fixed bottom bar on mobile */}
+      <div className="h-28 sm:hidden" aria-hidden />
     </>
   );
 }

@@ -185,12 +185,36 @@ Edit `src/data/products.json` to change the product catalog.
 - Edit `src/app/refunds/page.tsx` for returns policy
 - Remove DRAFT banners when ready for production
 
+## Design System
+
+The storefront is built from a small set of owned primitives rather than a UI library.
+
+- **Tokens** — `src/app/globals.css` defines surfaces (`--il-paper`, `--il-shell`, `--il-sand`),
+  hairlines, radii, a three-step elevation scale, section rhythm variables, a clamp-based type
+  scale (`il-display`, `il-h2`, `il-h3`, `il-lead`, `il-eyebrow`), and a button system
+  (`il-btn` plus `il-btn-primary` / `-secondary` / `-ghost` / `-sm` / `-lg`).
+- **Sections** — `src/components/ui/Section.tsx` exports `Section` (tone, rhythm, hairline divider)
+  and `SectionHeader` (eyebrow → title → description → action), so marketing pages compose from
+  full sections instead of ad-hoc padding.
+- **Motion** — `src/components/motion-primitives/` holds copy-paste animation components built on
+  [`motion`](https://www.npmjs.com/package/motion) (MIT): `TextEffect`, `TextShimmer`, `InView` /
+  `InViewItem`, `Spotlight`, `Magnetic`. See the README in that folder.
+
+Accessibility rules the primitives follow:
+
+- Everything honours `prefers-reduced-motion`. A `[data-il-motion]` rule in `globals.css` forces
+  animated blocks to their final state for reduced-motion visitors and when printing, and the root
+  layout ships a `<noscript>` fallback with the same reset.
+- `Spotlight` and `Magnetic` require `(hover: hover) and (pointer: fine)`, so nothing moves under a
+  finger on touch devices — the mobile sticky add-to-cart bar stays still and tappable.
+
 ## Tech Stack
 
-- **Framework**: Next.js 14+ (App Router)
-- **Styling**: Tailwind CSS
+- **Framework**: Next.js 16 (App Router)
+- **Styling**: Tailwind CSS v4 + design tokens in `globals.css`
+- **Motion**: `motion` (MIT) via in-repo motion primitives
 - **Payments**: Stripe Checkout Sessions
-- **State**: React Context (cart)
+- **State**: React Context over a `useSyncExternalStore` cart store (localStorage)
 - **Deployment**: Render Web Service
 
 ## Important Notes

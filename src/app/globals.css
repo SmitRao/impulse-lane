@@ -387,6 +387,14 @@ p {
   box-shadow: var(--il-shadow-lg);
 }
 
+/* Pages with the mobile sticky add-to-cart bar extend the footer so the bar
+   never rests on the last row of links. */
+@media (max-width: 639px) {
+  body[data-sticky-atc='true'] footer {
+    padding-bottom: 8.5rem;
+  }
+}
+
 /* ---------------------------------------------------------------------------
    Motion helpers (paired with the in-repo Motion primitives)
    --------------------------------------------------------------------------- */
@@ -399,11 +407,19 @@ p {
   color: transparent;
 }
 
-/* Elements whose entrance is JS-animated. The reduced-motion block below and
-   the <noscript> fallback in the root layout force them to their final state so
-   content is never stuck at opacity 0. */
+/* Elements whose entrance is JS-animated. The reduced-motion block below, the
+   print rule, and the <noscript> fallback in the root layout force them to their
+   final state so content is never stuck at opacity 0. */
 [data-il-motion] {
   will-change: opacity, transform, filter;
+}
+
+@media print {
+  [data-il-motion] {
+    opacity: 1 !important;
+    filter: none !important;
+    transform: none !important;
+  }
 }
 
 /* Respect prefers-reduced-motion */

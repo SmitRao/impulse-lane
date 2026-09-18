@@ -7,7 +7,7 @@ import { formatPrice, getAllProducts } from '@/lib/products';
 import { useState, useMemo } from 'react';
 
 export default function CartPage() {
-  const { items, removeItem, updateQuantity, subtotal, clearCart, addItem } = useCart();
+  const { items, removeItem, updateQuantity, subtotal, clearCart, addItem, isHydrated } = useCart();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -70,6 +70,23 @@ export default function CartPage() {
       setIsLoading(false);
     }
   };
+
+  // The stored cart is read after hydration, so hold the frame instead of
+  // flashing the empty state to someone who already has items.
+  if (!isHydrated) {
+    return (
+      <div className="bg-[var(--il-cream)] py-8 sm:py-12 min-h-[60vh]" aria-busy="true">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="h-8 w-40 rounded-full bg-[var(--il-sand)]" />
+          <div className="il-card mt-6 p-5">
+            <div className="h-4 w-56 rounded-full bg-[var(--il-sand)]" />
+          </div>
+          <div className="il-card mt-4 h-28" />
+          <span className="sr-only">Loading your cart…</span>
+        </div>
+      </div>
+    );
+  }
 
   if (items.length === 0) {
     return (

@@ -41,7 +41,7 @@ export function ProductCard({ product }: ProductCardProps) {
             alt={product.name}
             fill
             unoptimized
-            className="object-contain p-8 transition-transform duration-500 group-hover:scale-[1.04]"
+            className="object-contain p-6 transition-transform duration-500 group-hover:scale-[1.04]"
           />
 
           {/* Badges */}
