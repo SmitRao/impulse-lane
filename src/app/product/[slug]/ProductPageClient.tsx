@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { getProductBySlug, getAllProducts, formatPrice, getValueCallout, getIdentityBadges } from '@/lib/products';
 import { useCart } from '@/context/CartContext';
 import { ProductCard } from '@/components/ProductCard';
+import { InView, InViewItem, TextEffect } from '@/components/motion-primitives';
+import { Section, SectionHeader } from '@/components/ui/Section';
 
 interface ProductPageClientProps {
   slug: string;
@@ -14,7 +16,7 @@ interface ProductPageClientProps {
 export default function ProductPageClient({ slug }: ProductPageClientProps) {
   const product = getProductBySlug(slug);
   const { addItem } = useCart();
-  
+
   const [selectedVariant, setSelectedVariant] = useState<string | undefined>(
     product?.variants?.[0]?.label
   );
@@ -29,10 +31,7 @@ export default function ProductPageClient({ slug }: ProductPageClientProps) {
         <span className="text-6xl mb-4">🥟</span>
         <h1 className="text-2xl font-bold text-[var(--il-ink)] mb-2">Product Not Found</h1>
         <p className="text-[var(--il-muted)] mb-6">This dumpling must have rolled away!</p>
-        <Link
-          href="/"
-          className="px-6 py-3 btn-pink"
-        >
+        <Link href="/" className="il-btn il-btn-primary">
           Back to Shop
         </Link>
       </div>
@@ -86,169 +85,152 @@ export default function ProductPageClient({ slug }: ProductPageClientProps) {
     }
   ];
 
+  const trustItems = [
+    { icon: '🚚', label: 'Free ship $35+', href: '/shipping' },
+    { icon: '📦', label: 'Ships 2–4 biz days' },
+    { icon: '↩️', label: '30-day returns', href: '/returns' },
+    { icon: '✨', label: 'Sealed glitter' },
+  ];
+
   return (
-    <div className="bg-[var(--il-cream)] py-8 sm:py-12">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <>
+      {/* Buy box */}
+      <Section tone="wash" size="tight">
         {/* Breadcrumb */}
-        <nav className="mb-8">
+        <nav aria-label="Breadcrumb" className="mb-8">
           <ol className="flex items-center gap-2 text-sm text-[var(--il-muted)]">
             <li>
               <Link href="/" className="hover:text-[var(--il-pink)]">Shop</Link>
             </li>
-            <li>/</li>
+            <li aria-hidden>/</li>
             <li className="text-[var(--il-ink)]">{product.name}</li>
           </ol>
         </nav>
 
-        {/* Product Detail */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-16">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
           {/* Gallery */}
-          <div className="space-y-4">
-            {/* Main Image */}
-            <div className="relative aspect-square bg-wash rounded-3xl overflow-hidden">
-              {gallerySlots[selectedImageIndex] ? (
-                <Image
-                  src={gallerySlots[selectedImageIndex]!}
-                  alt={product.name}
-                  fill
-                  unoptimized
-                  className="object-contain p-8"
-                  priority
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center">
-                  <div className="text-center text-[var(--il-muted)]">
-                    <span className="text-4xl block mb-2">📷</span>
-                    <span className="text-sm">More photos coming soon</span>
+          <div className="lg:col-span-7">
+            <div className="lg:sticky lg:top-24">
+              {/* Main Image */}
+              <div className="il-frame relative aspect-square bg-wash">
+                {gallerySlots[selectedImageIndex] ? (
+                  <Image
+                    src={gallerySlots[selectedImageIndex]!}
+                    alt={product.name}
+                    fill
+                    unoptimized
+                    className="object-contain p-8"
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 55vw"
+                  />
+                ) : (
+                  <div className="flex h-full w-full items-center justify-center">
+                    <div className="text-center text-[var(--il-muted)]">
+                      <span className="mb-2 block text-4xl" aria-hidden>📷</span>
+                      <span className="text-sm">More photos coming soon</span>
+                    </div>
                   </div>
+                )}
+                {/* Identity Badges */}
+                <div className="absolute left-4 top-4 flex flex-wrap gap-2">
+                  {identityBadges.slice(0, 3).map((badge) => (
+                    <span key={badge.label} className={`rounded-full px-2.5 py-1 text-xs font-semibold ${badge.className}`}>
+                      {badge.label}
+                    </span>
+                  ))}
                 </div>
-              )}
-              {/* Identity Badges */}
-              <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                {identityBadges.slice(0, 3).map((badge) => (
-                  <span key={badge.label} className={`px-2.5 py-1 text-xs font-semibold rounded-full ${badge.className}`}>
-                    {badge.label}
-                  </span>
+                {/* Pack size */}
+                <div className="absolute bottom-4 right-4">
+                  <span className="chip-gummy text-lg">×{product.packSize}</span>
+                </div>
+              </div>
+
+              {/* Thumbnail Grid */}
+              <div className="mt-4 grid grid-cols-4 gap-3">
+                {gallerySlots.slice(0, 4).map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => img && setSelectedImageIndex(idx)}
+                    aria-label={img ? `View ${product.name} image ${idx + 1}` : 'More photos coming soon'}
+                    className={`relative aspect-square overflow-hidden rounded-[var(--il-r-md)] border transition-colors ${
+                      selectedImageIndex === idx && img
+                        ? 'border-[var(--il-pink)]'
+                        : 'border-[var(--il-line)] hover:border-[var(--il-line-strong)]'
+                    } ${!img ? 'cursor-default bg-[var(--il-shell)]' : 'bg-wash'}`}
+                    disabled={!img}
+                  >
+                    {img ? (
+                      <Image
+                        src={img}
+                        alt={`${product.name} view ${idx + 1}`}
+                        fill
+                        unoptimized
+                        className="object-contain p-2"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-xl text-[var(--il-muted)]">
+                        +
+                      </div>
+                    )}
+                  </button>
                 ))}
               </div>
-              {/* Pack size */}
-              <div className="absolute bottom-4 right-4">
-                <span className="chip-gummy text-lg">
-                  ×{product.packSize}
-                </span>
-              </div>
-            </div>
-            
-            {/* Thumbnail Grid */}
-            <div className="grid grid-cols-4 gap-2">
-              {gallerySlots.slice(0, 4).map((img, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => img && setSelectedImageIndex(idx)}
-                  className={`relative aspect-square rounded-xl overflow-hidden border-2 transition-colors ${
-                    selectedImageIndex === idx 
-                      ? 'border-[var(--il-pink)]' 
-                      : 'border-transparent hover:border-zinc-300'
-                  } ${!img ? 'bg-zinc-100 cursor-default' : 'bg-wash'}`}
-                  disabled={!img}
-                >
-                  {img ? (
-                    <Image
-                      src={img}
-                      alt={`${product.name} view ${idx + 1}`}
-                      fill
-                      unoptimized
-                      className="object-contain p-2"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-zinc-400 text-xl">
-                      +
-                    </div>
-                  )}
-                </button>
-              ))}
-            </div>
 
-            {/* UGC/ASMR Video Placeholder - Below gallery */}
-            <div className="mt-4 aspect-video bg-zinc-100 rounded-2xl flex flex-col items-center justify-center border-2 border-dashed border-zinc-300">
-              <span className="text-3xl mb-2">🎥</span>
-              <p className="text-sm text-[var(--il-muted)] font-medium">ASMR squeeze video</p>
-              <p className="text-xs text-[var(--il-muted)] mt-1">Coming soon</p>
+              {/* UGC/ASMR Video Placeholder - Below gallery */}
+              <div className="mt-4 flex aspect-video flex-col items-center justify-center rounded-[var(--il-r-lg)] border border-dashed border-[var(--il-line-strong)] bg-[var(--il-shell)]">
+                <span className="mb-2 text-3xl" aria-hidden>🎥</span>
+                <p className="text-sm font-medium text-[var(--il-ink)]">ASMR squeeze video</p>
+                <p className="mt-1 text-xs text-[var(--il-muted)]">Coming soon</p>
+              </div>
             </div>
           </div>
 
           {/* Details */}
-          <div className="flex flex-col">
-            <h1 className="text-3xl sm:text-4xl font-bold text-[var(--il-ink)] mb-3">
-              {product.name}
-            </h1>
-            
-            <p className="text-lg text-[var(--il-muted)] mb-4">
-              {product.shortBlurb}
+          <div className="flex flex-col lg:col-span-5">
+            <p className="il-eyebrow mb-3">
+              {product.packSize}-piece multipack · Age {product.ageGrade}
             </p>
 
+            <TextEffect
+              as="h1"
+              per="word"
+              preset="blur-slide"
+              className="il-h2 text-[var(--il-ink)]"
+              stagger={0.045}
+            >
+              {product.name}
+            </TextEffect>
+
+            <p className="il-lead mt-4">{product.shortBlurb}</p>
+
             {/* Price + Value Callout */}
-            <div className="mb-6">
-              <div className="flex items-center gap-3 mb-2">
-                <span className="text-3xl font-bold text-[var(--il-ink)]">
-                  {formatPrice(product.price)}
-                </span>
-              </div>
+            <div className="mt-8">
+              <span className="il-num text-4xl font-bold text-[var(--il-ink)]">
+                {formatPrice(product.price)}
+              </span>
               {valueCallout && (
-                <p className="text-sm text-[var(--il-mint)] font-medium bg-[var(--il-mint)] bg-opacity-15 px-3 py-1.5 rounded-lg inline-block">
+                <p className="mt-3 rounded-[var(--il-r-sm)] border border-[var(--il-line)] bg-[var(--il-paper)] px-3 py-2 text-sm text-[var(--il-mint-ink)]">
                   💡 {valueCallout}
                 </p>
               )}
             </div>
 
-            {/* Trust Strip with Shipping/Returns Links */}
-            <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-[var(--il-muted)] mb-4 py-4 border-y border-zinc-200">
-              <Link href="/shipping" className="flex items-center gap-1.5 hover:text-[var(--il-pink)] transition-colors">
-                <span>🚚</span>
-                <span className="underline">Free ship $35+</span>
-              </Link>
-              <span className="flex items-center gap-1.5">
-                <span>📦</span>
-                <span>Ships 2–4 biz days</span>
-              </span>
-              <Link href="/returns" className="flex items-center gap-1.5 hover:text-[var(--il-pink)] transition-colors">
-                <span>↩️</span>
-                <span className="underline">30-day returns</span>
-              </Link>
-              <span className="flex items-center gap-1.5">
-                <span className="text-[var(--il-grape)] font-semibold">{product.ageGrade}</span>
-              </span>
-              <span className="flex items-center gap-1.5">
-                <span>✨</span>
-                <span>Sealed glitter</span>
-              </span>
-            </div>
-
-            {/* Quick Policy Links */}
-            <div className="flex gap-4 text-xs text-[var(--il-muted)] mb-6">
-              <Link href="/shipping" className="hover:text-[var(--il-pink)] underline">
-                Shipping details →
-              </Link>
-              <Link href="/returns" className="hover:text-[var(--il-pink)] underline">
-                Returns policy →
-              </Link>
-            </div>
-
             {/* Variants */}
             {product.variants && product.variants.length > 0 && (
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-[var(--il-ink)] mb-2">
+              <div className="mt-8">
+                <span className="mb-3 block text-sm font-semibold text-[var(--il-ink)]">
                   Select Variant
-                </label>
+                </span>
                 <div className="flex flex-wrap gap-2">
                   {product.variants.map((variant) => (
                     <button
                       key={variant.id}
                       onClick={() => setSelectedVariant(variant.label)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                      aria-pressed={selectedVariant === variant.label}
+                      className={`rounded-full px-4 py-2.5 text-sm font-medium transition-colors ${
                         selectedVariant === variant.label
-                          ? 'bg-[var(--il-pink)] text-white'
-                          : 'bg-white border border-zinc-300 text-[var(--il-ink)] hover:border-[var(--il-pink)]'
+                          ? 'bg-[var(--il-ink)] text-white'
+                          : 'border border-[var(--il-line-strong)] bg-[var(--il-paper)] text-[var(--il-ink)] hover:border-[var(--il-ink)]'
                       }`}
                     >
                       {variant.label}
@@ -259,21 +241,21 @@ export default function ProductPageClient({ slug }: ProductPageClientProps) {
             )}
 
             {/* Quantity */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-[var(--il-ink)] mb-2">
-                Quantity
-              </label>
+            <div className="mt-8">
+              <span className="mb-3 block text-sm font-semibold text-[var(--il-ink)]">Quantity</span>
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 flex items-center justify-center rounded-full border border-zinc-300 text-[var(--il-ink)] hover:border-[var(--il-pink)] transition-colors"
+                  aria-label="Decrease quantity"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--il-line-strong)] bg-[var(--il-paper)] text-[var(--il-ink)] transition-colors hover:border-[var(--il-ink)]"
                 >
-                  -
+                  −
                 </button>
-                <span className="w-12 text-center font-medium">{quantity}</span>
+                <span className="il-num w-10 text-center font-semibold">{quantity}</span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-10 h-10 flex items-center justify-center rounded-full border border-zinc-300 text-[var(--il-ink)] hover:border-[var(--il-pink)] transition-colors"
+                  aria-label="Increase quantity"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--il-line-strong)] bg-[var(--il-paper)] text-[var(--il-ink)] transition-colors hover:border-[var(--il-ink)]"
                 >
                   +
                 </button>
@@ -281,152 +263,222 @@ export default function ProductPageClient({ slug }: ProductPageClientProps) {
             </div>
 
             {/* Desktop Add to Cart */}
-            <div className="hidden sm:block mb-6">
+            <div className="mt-8 hidden sm:block">
               <button
                 onClick={handleAddToCart}
-                className={`w-full py-4 rounded-full font-medium text-lg transition-colors ${
-                  added
-                    ? 'bg-[var(--il-mint)] text-[var(--il-ink)]'
-                    : 'btn-pink'
+                className={`il-btn il-btn-lg w-full ${
+                  added ? 'bg-[var(--il-mint)] text-[var(--il-ink)]' : 'il-btn-primary'
                 }`}
               >
                 {added ? '✓ Added!' : 'Add to Cart'}
               </button>
               <Link
                 href="/cart"
-                className="mt-3 block text-center text-sm text-[var(--il-muted)] hover:text-[var(--il-pink)] underline"
+                className="mt-3 block text-center text-sm text-[var(--il-muted)] underline hover:text-[var(--il-pink)]"
               >
                 View Cart
               </Link>
             </div>
 
+            {/* Trust Strip with Shipping/Returns Links */}
+            <div className="il-hairline mt-8 flex flex-wrap gap-x-5 gap-y-2.5 pt-6 text-sm text-[var(--il-muted)]">
+              {trustItems.map((item) =>
+                item.href ? (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className="flex items-center gap-1.5 transition-colors hover:text-[var(--il-pink)]"
+                  >
+                    <span aria-hidden>{item.icon}</span>
+                    <span className="underline decoration-[var(--il-line-strong)] underline-offset-4">
+                      {item.label}
+                    </span>
+                  </Link>
+                ) : (
+                  <span key={item.label} className="flex items-center gap-1.5">
+                    <span aria-hidden>{item.icon}</span>
+                    {item.label}
+                  </span>
+                )
+              )}
+              <span className="flex items-center gap-1.5 font-semibold text-[var(--il-grape)]">
+                {product.ageGrade}
+              </span>
+            </div>
+
+            {/* Quick Policy Links */}
+            <div className="mt-4 flex gap-4 text-xs text-[var(--il-muted)]">
+              <Link href="/shipping" className="underline hover:text-[var(--il-pink)]">
+                Shipping details →
+              </Link>
+              <Link href="/returns" className="underline hover:text-[var(--il-pink)]">
+                Returns policy →
+              </Link>
+            </div>
+
             {/* What's in the Pack */}
             {product.packContents && (
-              <div className="bg-white rounded-2xl p-5 mb-6 shadow-sm">
-                <h3 className="font-semibold text-[var(--il-ink)] mb-3 flex items-center gap-2">
-                  <span>📦</span>
+              <div className="il-card mt-8 p-6">
+                <h2 className="il-h3 flex items-center gap-2 text-[var(--il-ink)]">
+                  <span aria-hidden>📦</span>
                   What&apos;s in the Pack
-                </h3>
-                <ul className="space-y-2 text-sm text-[var(--il-muted)]">
-                  <li className="flex items-center gap-2">
-                    <span className="text-[var(--il-pink)]">•</span>
-                    <span><strong>Count:</strong> {product.packContents.count} squishies</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-[var(--il-pink)]">•</span>
-                    <span><strong>Size:</strong> {product.packContents.sizeCm}</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-[var(--il-pink)]">•</span>
-                    <span><strong>Fill:</strong> {product.packContents.fill}</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-[var(--il-pink)]">•</span>
-                    <span><strong>Material:</strong> {product.packContents.material}</span>
-                  </li>
-                  {product.packContents.notEdible && (
-                    <li className="flex items-center gap-2 text-[var(--il-grape)]">
-                      <span>⚠️</span>
-                      <span><strong>Not edible</strong> — decorative fidget only</span>
-                    </li>
-                  )}
-                </ul>
+                </h2>
+                <dl className="mt-4 space-y-3 text-sm">
+                  {[
+                    { term: 'Count', value: `${product.packContents.count} squishies` },
+                    { term: 'Size', value: product.packContents.sizeCm },
+                    { term: 'Fill', value: product.packContents.fill },
+                    { term: 'Material', value: product.packContents.material },
+                  ].map((row) => (
+                    <div
+                      key={row.term}
+                      className="flex items-baseline justify-between gap-4 border-t border-[var(--il-line)] pt-3 first:border-t-0 first:pt-0"
+                    >
+                      <dt className="text-[var(--il-muted)]">{row.term}</dt>
+                      <dd className="text-right font-medium text-[var(--il-ink)]">{row.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+                {product.packContents.notEdible && (
+                  <p className="mt-4 flex items-start gap-2 rounded-[var(--il-r-sm)] bg-[var(--il-shell)] p-3 text-sm text-[var(--il-grape)]">
+                    <span aria-hidden>⚠️</span>
+                    <span>
+                      <strong>Not edible</strong> — decorative fidget only
+                    </span>
+                  </p>
+                )}
               </div>
             )}
 
-            {/* Reviews Section - Scaffold */}
-            <div className="bg-white rounded-2xl p-5 mb-6 shadow-sm">
-              <h3 className="font-semibold text-[var(--il-ink)] mb-3 flex items-center gap-2">
-                <span>⭐</span>
-                Customer Reviews
-              </h3>
-              <div className="text-center py-6 border border-dashed border-zinc-200 rounded-xl bg-zinc-50">
-                <p className="text-[var(--il-muted)] mb-2">No reviews yet</p>
-                <p className="text-sm text-[var(--il-pink)] font-medium">Be the first to review this product!</p>
-                <p className="text-xs text-[var(--il-muted)] mt-2">
-                  Reviews coming soon after launch
-                </p>
-              </div>
-            </div>
-
-            {/* FAQ Accordion */}
-            <div className="border-t border-zinc-200 pt-6">
-              <h3 className="font-semibold text-[var(--il-ink)] mb-4">Frequently Asked Questions</h3>
-              <div className="space-y-2">
-                {faqItems.map((item, idx) => (
-                  <div key={idx} className="border border-zinc-200 rounded-xl overflow-hidden">
-                    <button
-                      onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                      className="w-full flex items-center justify-between p-4 text-left hover:bg-zinc-50 transition-colors"
-                    >
-                      <span className="font-medium text-[var(--il-ink)]">{item.question}</span>
-                      <span className={`text-[var(--il-muted)] transition-transform ${openFaq === idx ? 'rotate-180' : ''}`}>
-                        ▼
-                      </span>
-                    </button>
-                    {openFaq === idx && (
-                      <div className="px-4 pb-4 text-sm text-[var(--il-muted)]">
-                        {item.answer}
-                      </div>
-                    )}
-                  </div>
+            {/* Features */}
+            {product.features.length > 0 && (
+              <ul className="mt-8 space-y-2.5 text-sm text-[var(--il-muted)]">
+                {product.features.map((feature) => (
+                  <li key={feature} className="flex items-start gap-2.5">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--il-pink)]" />
+                    <span>{feature}</span>
+                  </li>
                 ))}
-              </div>
-            </div>
+              </ul>
+            )}
 
             {/* Safety Link */}
-            <div className="mt-6 pt-6 border-t border-zinc-200">
-              <Link 
-                href="/safety" 
-                className="text-sm text-[var(--il-pink)] hover:underline flex items-center gap-2"
+            <div className="il-hairline mt-8 pt-6">
+              <Link
+                href="/safety"
+                className="flex items-center gap-2 text-sm font-semibold text-[var(--il-pink)] hover:underline"
               >
-                <span>🛡️</span>
+                <span aria-hidden>🛡️</span>
                 <span>Full safety information →</span>
               </Link>
             </div>
           </div>
         </div>
+      </Section>
 
-        {/* Mobile Sticky ATC */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-zinc-200 p-4 sm:hidden z-20 shadow-[0_-4px_12px_rgba(0,0,0,0.1)]">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-3">
-                <span className="text-xl font-bold text-[var(--il-ink)]">{formatPrice(product.price)}</span>
-                <span className="px-2 py-0.5 bg-[var(--il-grape)] text-white text-xs font-bold rounded-full">
-                  {product.ageGrade}
-                </span>
-              </div>
-            </div>
-            <button
-              onClick={handleAddToCart}
-              className={`w-full py-3 rounded-full font-medium text-base transition-colors ${
-                added
-                  ? 'bg-[var(--il-mint)] text-[var(--il-ink)]'
-                  : 'btn-pink'
-              }`}
-            >
-              {added ? '✓ Added!' : 'Add to Cart'}
-            </button>
+      {/* FAQ */}
+      <Section tone="paper" divider>
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-14">
+          <div className="lg:col-span-4">
+            <SectionHeader
+              eyebrow="Answers"
+              title="Frequently Asked Questions"
+              description="Squish feel, duplicates, care, safety, and returns."
+            />
           </div>
-        </div>
-        {/* Spacer for fixed bottom bar on mobile */}
-        <div className="h-28 sm:hidden" />
-
-        {/* Related Products */}
-        {relatedProducts.length > 0 && (
-          <div>
-            <h2 className="text-2xl font-bold text-[var(--il-ink)] mb-6">
-              You Might Also Like
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {relatedProducts.map((relatedProduct) => (
-                <ProductCard key={relatedProduct.id} product={relatedProduct} />
+          <div className="lg:col-span-8">
+            <div className="il-card divide-y divide-[var(--il-line)] overflow-hidden">
+              {faqItems.map((item, idx) => (
+                <div key={idx}>
+                  <h3>
+                    <button
+                      onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                      aria-expanded={openFaq === idx}
+                      className="flex w-full items-center justify-between gap-4 p-5 text-left transition-colors hover:bg-[var(--il-shell)]"
+                    >
+                      <span className="font-semibold text-[var(--il-ink)]">{item.question}</span>
+                      <span
+                        aria-hidden
+                        className={`text-[var(--il-muted)] transition-transform ${
+                          openFaq === idx ? 'rotate-180' : ''
+                        }`}
+                      >
+                        ▼
+                      </span>
+                    </button>
+                  </h3>
+                  {openFaq === idx && (
+                    <div className="px-5 pb-5 text-sm leading-relaxed text-[var(--il-muted)]">
+                      {item.answer}
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           </div>
-        )}
+        </div>
+      </Section>
+
+      {/* Reviews Section - Scaffold */}
+      <Section tone="shell" size="tight" divider>
+        <div className="il-card mx-auto max-w-2xl p-8 text-center">
+          <p className="il-eyebrow">Customer Reviews</p>
+          <p className="mt-4 text-[var(--il-muted)]">No reviews yet</p>
+          <p className="mt-1 font-semibold text-[var(--il-pink)]">
+            Be the first to review this product!
+          </p>
+          <p className="mt-2 text-xs text-[var(--il-muted)]">Reviews coming soon after launch</p>
+        </div>
+      </Section>
+
+      {/* Related Products */}
+      {relatedProducts.length > 0 && (
+        <Section tone="cream" divider>
+          <InView>
+            <SectionHeader
+              eyebrow="Keep collecting"
+              title="You Might Also Like"
+              action={
+                <Link href="/" className="il-btn il-btn-secondary il-btn-sm">
+                  All multipacks
+                </Link>
+              }
+            />
+          </InView>
+          <InView className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3" stagger={0.08}>
+            {relatedProducts.map((relatedProduct) => (
+              <InViewItem key={relatedProduct.id} className="h-full">
+                <ProductCard product={relatedProduct} />
+              </InViewItem>
+            ))}
+          </InView>
+        </Section>
+      )}
+
+      {/* Mobile Sticky ATC */}
+      <div className="fixed bottom-0 left-0 right-0 z-30 border-t border-[var(--il-line)] bg-[var(--il-paper)]/95 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0_-4px_20px_rgba(26,26,26,0.1)] backdrop-blur-md sm:hidden">
+        <div className="il-num mb-2 flex items-center gap-3">
+          <span className="text-xl font-bold text-[var(--il-ink)]">
+            {formatPrice(product.price)}
+          </span>
+          <span className="rounded-full bg-[var(--il-grape)] px-2 py-0.5 text-xs font-bold text-white">
+            {product.ageGrade}
+          </span>
+          {quantity > 1 && (
+            <span className="text-sm text-[var(--il-muted)]">Qty {quantity}</span>
+          )}
+        </div>
+        <button
+          onClick={handleAddToCart}
+          className={`il-btn w-full ${
+            added ? 'bg-[var(--il-mint)] text-[var(--il-ink)]' : 'il-btn-primary'
+          }`}
+        >
+          {added ? '✓ Added!' : 'Add to Cart'}
+        </button>
       </div>
-    </div>
+      {/* Spacer for fixed bottom bar on mobile */}
+      <div className="h-32 sm:hidden" aria-hidden />
+    </>
   );
 }

@@ -29,23 +29,24 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   const displayBadges = product.badges.slice(0, 2);
+  const pricePerPiece = product.packSize > 1 ? product.price / product.packSize : null;
 
   return (
-    <div className="group bg-white rounded-2xl overflow-hidden shadow-sm border border-zinc-100 card-hover">
+    <div className="il-card card-hover group flex h-full flex-col overflow-hidden">
       {/* Image section - clickable link */}
       <Link href={`/product/${product.slug}`} className="block">
-        <div className="relative aspect-square bg-wash overflow-hidden">
+        <div className="relative aspect-square overflow-hidden bg-wash">
           <Image
             src={product.image}
             alt={product.name}
             fill
             unoptimized
-            className="object-contain p-8 group-hover:scale-105 transition-transform duration-300"
+            className="object-contain p-8 transition-transform duration-500 group-hover:scale-[1.04]"
           />
-          
+
           {/* Badges */}
           {displayBadges.length > 0 && (
-            <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
+            <div className="absolute left-3 top-3 flex flex-wrap gap-1.5">
               {displayBadges.map((badge) => (
                 <span key={badge} className={`badge ${getBadgeClass(badge)}`}>
                   {badge}
@@ -56,44 +57,42 @@ export function ProductCard({ product }: ProductCardProps) {
 
           {/* Age grade + Pack size */}
           <div className="absolute bottom-3 right-3 flex gap-1.5">
-            <span className="px-2 py-0.5 bg-[var(--il-grape)] text-white text-xs font-bold rounded-full">
+            <span className="rounded-full bg-[var(--il-grape)] px-2 py-0.5 text-xs font-bold text-white">
               {product.ageGrade}
             </span>
-            <span className="chip-gummy">
-              ×{product.packSize}
-            </span>
+            <span className="chip-gummy">×{product.packSize}</span>
           </div>
         </div>
       </Link>
-      
-      <div className="p-4">
+
+      <div className="flex flex-1 flex-col p-5">
         {/* Title - clickable link */}
         <Link href={`/product/${product.slug}`} className="block">
-          <h3 className="font-semibold text-[var(--il-ink)] mb-1 group-hover:text-[var(--il-pink)] transition-colors">
+          <h3 className="il-h3 text-[var(--il-ink)] transition-colors group-hover:text-[var(--il-pink)]">
             {product.name}
           </h3>
         </Link>
-        <p className="text-sm text-[var(--il-muted)] mb-3 line-clamp-2">
-          {product.shortBlurb}
-        </p>
-        
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-lg font-bold text-[var(--il-ink)]">
+        <p className="il-body mt-2 line-clamp-2 text-sm">{product.shortBlurb}</p>
+
+        <div className="il-hairline mt-5 flex items-end justify-between gap-3 pt-5">
+          <div>
+            <span className="il-num text-xl font-bold text-[var(--il-ink)]">
               {formatPrice(product.price)}
             </span>
+            {pricePerPiece && (
+              <p className="il-num mt-0.5 text-xs text-[var(--il-muted)]">
+                ≈ {formatPrice(pricePerPiece)} each
+              </p>
+            )}
           </div>
           {/* Button is NOT nested inside a link now */}
-          <button
-            onClick={handleQuickAdd}
-            className="px-4 py-2 btn-pink text-sm"
-          >
+          <button onClick={handleQuickAdd} className="il-btn il-btn-primary il-btn-sm">
             Add to Cart
           </button>
         </div>
-        
+
         {product.variants && product.variants.length > 1 && (
-          <p className="text-xs text-[var(--il-muted)] mt-2">
+          <p className="mt-3 text-xs text-[var(--il-muted)]">
             {product.variants.length} variants available
           </p>
         )}
