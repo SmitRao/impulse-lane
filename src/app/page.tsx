@@ -158,7 +158,8 @@ export default function Home() {
                   alt="Bao steamer set with glitter squishies"
                   fill
                   className="object-cover"
-                  priority
+                  loading="eager"
+                  fetchPriority="high"
                   sizes="(max-width: 768px) 100vw, 50vw"
                 />
               </div>
@@ -176,7 +177,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="il-hairline mt-20 flex flex-wrap items-center gap-x-6 gap-y-3 pt-8 text-sm text-[var(--il-muted)]">
+        <div className="il-hairline mt-14 flex flex-wrap items-center gap-x-6 gap-y-3 pt-8 text-sm text-[var(--il-muted)]">
           <Link href="/shipping" className="flex items-center gap-2 hover:text-[var(--il-pink)]">
             <span aria-hidden>🚚</span>
             <span className="underline decoration-[var(--il-line-strong)] underline-offset-4">
