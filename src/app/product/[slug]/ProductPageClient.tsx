@@ -416,11 +416,13 @@ export default function ProductPageClient({ slug }: ProductPageClientProps) {
                       </span>
                     </button>
                   </h3>
-                  {openFaq === idx && (
-                    <div className="px-5 pb-5 text-sm leading-relaxed text-[var(--il-muted)]">
-                      {item.answer}
-                    </div>
-                  )}
+                  {/* Kept in the DOM so the answers ship with the HTML. */}
+                  <div
+                    hidden={openFaq !== idx}
+                    className="px-5 pb-5 text-sm leading-relaxed text-[var(--il-muted)]"
+                  >
+                    {item.answer}
+                  </div>
                 </div>
               ))}
             </div>
