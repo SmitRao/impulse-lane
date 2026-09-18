@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import { createContext, useCallback, useContext, useSyncExternalStore, ReactNode } from 'react';
 import type { Product } from '@/lib/products';
 import { getAllProducts } from '@/lib/products';
 
@@ -18,6 +18,8 @@ interface CartContextType {
   clearCart: () => void;
   itemCount: number;
   subtotal: number;
+  /** False until the stored cart has been read on the client. */
+  isHydrated: boolean;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -72,66 +74,116 @@ function writeCartToStorage(items: CartItem[]): void {
   }
 }
 
+/**
+ * The cart lives in a module-level store read through `useSyncExternalStore`.
+ * Server and hydration renders both see the empty snapshot, then the stored cart
+ * is loaded once the subscription attaches — reading localStorage during the
+ * first render instead would produce a hydration mismatch.
+ */
+const EMPTY_CART: CartItem[] = [];
+
+const store = {
+  items: EMPTY_CART,
+  hydrated: false,
+  listeners: new Set<() => void>(),
+};
+
+function emit(): void {
+  store.listeners.forEach((listener) => listener());
+}
+
+function subscribe(listener: () => void): () => void {
+  store.listeners.add(listener);
+
+  if (!store.hydrated) {
+    store.hydrated = true;
+    store.items = readCartFromStorage();
+    writeCartToStorage(store.items);
+    emit();
+  }
+
+  return () => {
+    store.listeners.delete(listener);
+  };
+}
+
+function getSnapshot(): CartItem[] {
+  return store.items;
+}
+
+function getServerSnapshot(): CartItem[] {
+  return EMPTY_CART;
+}
+
+function setItems(next: CartItem[]): void {
+  store.items = next;
+  writeCartToStorage(next);
+  emit();
+}
+
+function subscribeHydrated(listener: () => void): () => void {
+  return subscribe(listener);
+}
+
+function getHydratedSnapshot(): boolean {
+  return store.hydrated;
+}
+
+function getHydratedServerSnapshot(): boolean {
+  return false;
+}
+
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>(() => {
-    if (typeof window === 'undefined') return [];
-    const validatedItems = readCartFromStorage();
-    writeCartToStorage(validatedItems);
-    return validatedItems;
-  });
+  const items = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const isHydrated = useSyncExternalStore(
+    subscribeHydrated,
+    getHydratedSnapshot,
+    getHydratedServerSnapshot
+  );
 
   const addItem = useCallback((product: Product, variant?: string) => {
-    setItems(current => {
-      const existingIndex = current.findIndex(
-        item => item.product.id === product.id && item.variant === variant
-      );
-      
-      let updated: CartItem[];
-      if (existingIndex >= 0) {
-        updated = [...current];
-        updated[existingIndex] = {
-          ...updated[existingIndex],
-          quantity: updated[existingIndex].quantity + 1
-        };
-      } else {
-        updated = [...current, { product, quantity: 1, variant }];
-      }
-      
-      writeCartToStorage(updated);
-      return updated;
-    });
+    const current = store.items;
+    const existingIndex = current.findIndex(
+      item => item.product.id === product.id && item.variant === variant
+    );
+
+    if (existingIndex >= 0) {
+      const updated = [...current];
+      updated[existingIndex] = {
+        ...updated[existingIndex],
+        quantity: updated[existingIndex].quantity + 1,
+      };
+      setItems(updated);
+    } else {
+      setItems([...current, { product, quantity: 1, variant }]);
+    }
   }, []);
 
   const removeItem = useCallback((productId: string, variant?: string) => {
-    setItems(current => {
-      const updated = current.filter(
-        item => !(item.product.id === productId && item.variant === variant)
-      );
-      writeCartToStorage(updated);
-      return updated;
-    });
+    setItems(
+      store.items.filter(item => !(item.product.id === productId && item.variant === variant))
+    );
   }, []);
 
   const updateQuantity = useCallback((productId: string, quantity: number, variant?: string) => {
     if (quantity <= 0) {
-      removeItem(productId, variant);
+      setItems(
+        store.items.filter(item => !(item.product.id === productId && item.variant === variant))
+      );
       return;
     }
-    
-    setItems(current => {
-      const updated = current.map(item =>
+
+    setItems(
+      store.items.map(item =>
         item.product.id === productId && item.variant === variant
           ? { ...item, quantity }
           : item
-      );
-      writeCartToStorage(updated);
-      return updated;
-    });
-  }, [removeItem]);
+      )
+    );
+  }, []);
 
   const clearCart = useCallback(() => {
     setItems([]);
-    writeCartToStorage([]);
   }, []);
 
   const itemCount = items.reduce((sum, item) => sum + (item.quantity || 0), 0);
@@ -155,6 +207,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         clearCart,
         itemCount,
         subtotal,
+        isHydrated,
       }}
     >
       {children}

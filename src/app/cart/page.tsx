@@ -7,7 +7,7 @@ import { formatPrice, getAllProducts } from '@/lib/products';
 import { useState, useMemo } from 'react';
 
 export default function CartPage() {
-  const { items, removeItem, updateQuantity, subtotal, clearCart, addItem } = useCart();
+  const { items, removeItem, updateQuantity, subtotal, clearCart, addItem, isHydrated } = useCart();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -71,16 +71,30 @@ export default function CartPage() {
     }
   };
 
+  // The stored cart is read after hydration, so hold the frame instead of
+  // flashing the empty state to someone who already has items.
+  if (!isHydrated) {
+    return (
+      <div className="bg-[var(--il-cream)] py-8 sm:py-12 min-h-[60vh]" aria-busy="true">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="h-8 w-40 rounded-full bg-[var(--il-sand)]" />
+          <div className="il-card mt-6 p-5">
+            <div className="h-4 w-56 rounded-full bg-[var(--il-sand)]" />
+          </div>
+          <div className="il-card mt-4 h-28" />
+          <span className="sr-only">Loading your cart…</span>
+        </div>
+      </div>
+    );
+  }
+
   if (items.length === 0) {
     return (
       <div className="min-h-[60vh] flex flex-col items-center justify-center bg-[var(--il-cream)] py-16">
         <span className="text-6xl mb-4">🛒</span>
-        <h1 className="text-2xl font-bold text-[var(--il-ink)] mb-2">Your Cart is Empty</h1>
+        <h1 className="il-h2 text-[var(--il-ink)] mb-2">Your Cart is Empty</h1>
         <p className="text-[var(--il-muted)] mb-6">Time to fill it with some squishy dumplings!</p>
-        <Link
-          href="/"
-          className="px-6 py-3 btn-pink"
-        >
+        <Link href="/" className="il-btn il-btn-primary">
           Start Shopping
         </Link>
       </div>
@@ -90,12 +104,12 @@ export default function CartPage() {
   return (
     <div className="bg-[var(--il-cream)] py-8 sm:py-12 min-h-[60vh]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-[var(--il-ink)] mb-4">Your Cart</h1>
+        <h1 className="il-h2 text-[var(--il-ink)] mb-6">Your Cart</h1>
 
         {/* Free Shipping Progress */}
-        <div className="bg-white rounded-xl p-4 shadow-sm mb-6">
+        <div className="il-card p-5 mb-6">
           {subtotal >= shippingThreshold ? (
-            <div className="flex items-center gap-2 text-[var(--il-mint)]">
+            <div className="flex items-center gap-2 text-[var(--il-mint-ink)]">
               <span className="text-lg">🎉</span>
               <span className="font-medium">You&apos;ve unlocked FREE shipping!</span>
             </div>
@@ -107,7 +121,7 @@ export default function CartPage() {
                 </span>
                 <span className="text-[var(--il-muted)]">{formatPrice(shippingThreshold)} goal</span>
               </div>
-              <div className="h-2 bg-zinc-100 rounded-full overflow-hidden">
+              <div className="h-2 bg-[var(--il-sand)] rounded-full overflow-hidden">
                 <div 
                   className="h-full bg-[var(--il-pink)] rounded-full transition-all duration-300"
                   style={{ width: `${progressToFreeShipping}%` }}
@@ -123,7 +137,7 @@ export default function CartPage() {
             {items.map((item) => (
               <div
                 key={`${item.product.id}-${item.variant || 'default'}`}
-                className="flex gap-4 bg-white rounded-xl p-4 shadow-sm"
+                className="il-card flex gap-4 p-4"
               >
                 <div className="relative w-24 h-24 bg-wash rounded-lg overflow-hidden flex-shrink-0">
                   <Image
@@ -163,14 +177,14 @@ export default function CartPage() {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => updateQuantity(item.product.id, item.quantity - 1, item.variant)}
-                        className="w-8 h-8 flex items-center justify-center rounded-full border border-zinc-300 text-[var(--il-ink)] hover:border-[var(--il-pink)] transition-colors text-sm"
+                        className="w-9 h-9 flex items-center justify-center rounded-full border border-[var(--il-line-strong)] bg-[var(--il-paper)] text-[var(--il-ink)] hover:border-[var(--il-ink)] transition-colors text-sm"
                       >
                         -
                       </button>
                       <span className="w-8 text-center text-sm">{item.quantity}</span>
                       <button
                         onClick={() => updateQuantity(item.product.id, item.quantity + 1, item.variant)}
-                        className="w-8 h-8 flex items-center justify-center rounded-full border border-zinc-300 text-[var(--il-ink)] hover:border-[var(--il-pink)] transition-colors text-sm"
+                        className="w-9 h-9 flex items-center justify-center rounded-full border border-[var(--il-line-strong)] bg-[var(--il-paper)] text-[var(--il-ink)] hover:border-[var(--il-ink)] transition-colors text-sm"
                       >
                         +
                       </button>
@@ -193,7 +207,7 @@ export default function CartPage() {
 
             {/* Cross-sell for Free Shipping */}
             {crossSellProducts.length > 0 && amountToFreeShipping > 0 && (
-              <div className="mt-6 bg-[var(--il-gummy)] rounded-xl p-4">
+              <div className="mt-6 rounded-[var(--il-r-lg)] bg-[var(--il-gummy)] p-5">
                 <h3 className="font-semibold text-[var(--il-ink)] mb-3 flex items-center gap-2">
                   <span>🚚</span>
                   Add {formatPrice(amountToFreeShipping)} more for FREE shipping!
@@ -221,7 +235,7 @@ export default function CartPage() {
                       </div>
                       <button
                         onClick={() => addItem(product, product.variants?.[0]?.label)}
-                        className="px-3 py-1.5 text-xs font-medium bg-[var(--il-pink)] text-white rounded-full hover:bg-opacity-90 transition-colors whitespace-nowrap"
+                        className="il-btn il-btn-primary il-btn-sm text-xs whitespace-nowrap"
                       >
                         + Add
                       </button>
@@ -237,7 +251,7 @@ export default function CartPage() {
 
           {/* Order Summary */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl p-6 shadow-sm sticky top-24">
+            <div className="il-card p-6 sticky top-24">
               <h2 className="font-semibold text-[var(--il-ink)] mb-4">Order Summary</h2>
 
               <div className="space-y-3 text-sm">
@@ -247,7 +261,7 @@ export default function CartPage() {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-[var(--il-muted)]">Shipping</span>
-                  <span className={shippingCost === 0 ? 'text-[var(--il-mint)] font-medium' : 'text-[var(--il-ink)]'}>
+                  <span className={shippingCost === 0 ? 'text-[var(--il-mint-ink)] font-semibold' : 'text-[var(--il-ink)]'}>
                     {shippingCost === 0 ? 'FREE' : formatPrice(shippingCost)}
                   </span>
                 </div>
@@ -269,7 +283,7 @@ export default function CartPage() {
               <button
                 onClick={handleCheckout}
                 disabled={isLoading}
-                className="w-full mt-6 py-3 btn-pink disabled:opacity-50 disabled:cursor-not-allowed"
+                className="il-btn il-btn-primary w-full mt-6"
               >
                 {isLoading ? 'Loading...' : 'Checkout'}
               </button>

@@ -62,6 +62,12 @@ export default function RootLayout({
       lang="en"
       className={`${fredoka.variable} ${nunito.variable} h-full antialiased`}
     >
+      <head>
+        {/* Entrance animations start hidden; without JS they must still be readable. */}
+        <noscript>
+          <style>{`[data-il-motion]{opacity:1!important;filter:none!important;transform:none!important}`}</style>
+        </noscript>
+      </head>
       <body className="min-h-full flex flex-col bg-[var(--il-cream)]">
         <CartProvider>
           <TestModeBanner />
